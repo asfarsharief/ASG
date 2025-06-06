@@ -26,6 +26,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormControlLabel,
+  Checkbox,
+  Chip,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Team, Player, AuctionBand, Auction } from '../types';
@@ -54,7 +57,10 @@ const AuctionSetup = () => {
   const [newBand, setNewBand] = useState({
     name: '',
     basePrice: '',
+    randomizePlayersOrder: true,
+    players: [] as Player[],
   });
+  const [randomizeAllPlayers, setRandomizeAllPlayers] = useState(true);
   const [newPlayer, setNewPlayer] = useState({
     name: '',
     photoUrl: '',
@@ -62,7 +68,6 @@ const AuctionSetup = () => {
   const [expandedBands, setExpandedBands] = useState<number[]>([]);
   const [availablePlayers, setAvailablePlayers] = useState<Player[]>([]);
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
-  const [randomizePlayersOrder, setRandomizePlayersOrder] = useState(false);
 
   // Get players who are not already captains or vice captains
   const getAvailablePlayersForTeam = () => {
@@ -130,7 +135,7 @@ const AuctionSetup = () => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, teams: updatedTeams } : a
+            a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
           );
           localforage.setItem('auctions', JSON.stringify(updatedAuctions));
         }
@@ -162,7 +167,7 @@ const AuctionSetup = () => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, teams: updatedTeams } : a
+            a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
           );
           localforage.setItem('auctions', JSON.stringify(updatedAuctions));
         }
@@ -187,7 +192,7 @@ const AuctionSetup = () => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, teams: updatedTeams } : a
+            a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
           );
           localforage.setItem('auctions', JSON.stringify(updatedAuctions));
         }
@@ -212,6 +217,8 @@ const AuctionSetup = () => {
     setNewBand({
       name: band.name,
       basePrice: band.basePrice.toString(),
+      randomizePlayersOrder: band.randomizePlayersOrder,
+      players: band.players,
     });
     setIsEditingBand(true);
     setOpenBandDialog(true);
@@ -227,7 +234,7 @@ const AuctionSetup = () => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, bands: updatedBands } : a
+            a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
           );
           localforage.setItem('auctions', JSON.stringify(updatedAuctions));
         }
@@ -238,6 +245,14 @@ const AuctionSetup = () => {
   const handleAddBand = () => {
     if (!newBand.name || !newBand.basePrice) return;
 
+    // Get selected players
+    const selectedPlayers = availablePlayers
+      .filter(player => selectedPlayerIds.includes(player.id))
+      .map(player => ({
+        ...player,
+        band: isEditingBand ? selectedBand?.id || Date.now() : Date.now()
+      }));
+
     if (isEditingBand && selectedBand) {
       // Update existing band
       const updatedBands = bands.map(band => 
@@ -246,6 +261,8 @@ const AuctionSetup = () => {
               ...band,
               name: newBand.name,
               basePrice: Number(newBand.basePrice),
+              randomizePlayersOrder: randomizeAllPlayers ? true : newBand.randomizePlayersOrder,
+              players: [...band.players, ...selectedPlayers],
             }
           : band
       );
@@ -256,7 +273,7 @@ const AuctionSetup = () => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, bands: updatedBands } : a
+            a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
           );
           localforage.setItem('auctions', JSON.stringify(updatedAuctions));
         }
@@ -267,7 +284,8 @@ const AuctionSetup = () => {
         id: Date.now(),
         name: newBand.name,
         basePrice: Number(newBand.basePrice),
-        players: [],
+        players: selectedPlayers,
+        randomizePlayersOrder: randomizeAllPlayers ? true : newBand.randomizePlayersOrder,
       };
 
       const updatedBands = [...bands, band];
@@ -278,24 +296,22 @@ const AuctionSetup = () => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, bands: updatedBands } : a
+            a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
           );
           localforage.setItem('auctions', JSON.stringify(updatedAuctions));
         }
       });
     }
 
-    setOpenBandDialog(false);
-    setNewBand({ name: '', basePrice: '' });
-    setIsEditingBand(false);
-    setSelectedBand(null);
+    handleCloseBandDialog();
   };
 
   const handleCloseBandDialog = () => {
     setOpenBandDialog(false);
-    setNewBand({ name: '', basePrice: '' });
+    setNewBand({ name: '', basePrice: '', randomizePlayersOrder: false, players: [] });
     setIsEditingBand(false);
     setSelectedBand(null);
+    setSelectedPlayerIds([]);
   };
 
   const handleAddPlayersToBand = () => {
@@ -308,11 +324,10 @@ const AuctionSetup = () => {
       band: selectedBand.id
     }));
 
-    console.log("CHECKING IN random: ", randomizePlayersOrder)
-    // Randomize players if checkbox is checked
-    // if (randomizePlayersOrder) {
-    //   selectedPlayers = [...selectedPlayers].sort(() => Math.random() - 0.5);
-    // }
+    // Randomize players if the band has randomizePlayersOrder set to true
+    if (selectedBand.randomizePlayersOrder) {
+      selectedPlayers = [...selectedPlayers].sort(() => Math.random() - 0.5);
+    }
 
     const updatedBands = bands.map(band => {
       if (band.id === selectedBand.id) {
@@ -331,7 +346,7 @@ const AuctionSetup = () => {
       if (storedAuctions && typeof storedAuctions === 'string') {
         const auctions = JSON.parse(storedAuctions);
         const updatedAuctions = auctions.map((a: Auction) => 
-          a.id === id ? { ...a, bands: updatedBands, randomizePlayersOrder: randomizePlayersOrder } : a
+          a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
         );
         localforage.setItem('auctions', JSON.stringify(updatedAuctions));
       }
@@ -339,7 +354,6 @@ const AuctionSetup = () => {
 
     setOpenPlayerDialog(false);
     setSelectedPlayerIds([]);
-    // setRandomizePlayersOrder(false); // Reset the checkbox
   };
 
   const handleRemovePlayerFromBand = (bandId: number, playerId: string) => {
@@ -360,7 +374,7 @@ const AuctionSetup = () => {
       if (storedAuctions && typeof storedAuctions === 'string') {
         const auctions = JSON.parse(storedAuctions);
         const updatedAuctions = auctions.map((a: Auction) => 
-          a.id === id ? { ...a, bands: updatedBands } : a
+          a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
         );
         localforage.setItem('auctions', JSON.stringify(updatedAuctions));
       }
@@ -369,8 +383,6 @@ const AuctionSetup = () => {
 
   const handleStartAuction = () => {
     console.log("handleStartAuction in AuctionSetup called");
-    console.log("Teams: ", teams);
-    console.log("Bands: ", bands);
 
     if (teams.length === 0) {
       alert('Please add at least one team!');
@@ -387,13 +399,17 @@ const AuctionSetup = () => {
       alert('Please add at least one player!');
       return;
     }
-    console.log("Randomized value: ", randomizePlayersOrder)
-    // Update auction status and randomizePlayersOrder
+
+    // Update auction status and players
     localforage.getItem('auctions').then((storedAuctions) => {
       if (storedAuctions && typeof storedAuctions === 'string') {
         const auctions = JSON.parse(storedAuctions);
         const updatedAuctions = auctions.map((auction: Auction) => 
-          auction.id === id ? { ...auction, status: 'in_progress', randomizePlayersOrder: randomizePlayersOrder } : auction
+          auction.id === id ? { 
+            ...auction, 
+            status: 'in_progress',
+            randomizeAllPlayers: randomizeAllPlayers,
+          } : auction
         );
         localforage.setItem('auctions', JSON.stringify(updatedAuctions));
         console.log("Updated Auctions: ", updatedAuctions);
@@ -426,7 +442,7 @@ const AuctionSetup = () => {
       if (storedAuctions && typeof storedAuctions === 'string') {
         const auctions = JSON.parse(storedAuctions);
         const updatedAuctions = auctions.map((a: Auction) => 
-          a.id === id ? { ...a, status: 'setup' } : a
+          a.id === id ? { ...a, status: 'setup', randomizeAllPlayers: randomizeAllPlayers } : a
         );
         localforage.setItem('auctions', JSON.stringify(updatedAuctions));
       }
@@ -443,7 +459,7 @@ const AuctionSetup = () => {
     );
   };
 
-  const steps = ['Add Teams', 'Add Bands', 'Add Players', 'Start Auction'];
+  const steps = ['Add Teams', 'Add Bands', 'Start Auction'];
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
@@ -535,20 +551,33 @@ const AuctionSetup = () => {
           <Grid item xs={12}>
             <Card>
               <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                  <Typography variant="h6">Add Bands</Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      setIsEditingBand(false);
-                      setSelectedBand(null);
-                      setNewBand({ name: '', basePrice: '' });
-                      setOpenBandDialog(true);
-                    }}
-                  >
-                    Add Band
-                  </Button>
+                <Box sx={{ mb: 4 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Typography variant="h6">Add Bands</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={randomizeAllPlayers}
+                            onChange={(e) => setRandomizeAllPlayers(e.target.checked)}
+                          />
+                        }
+                        label="Randomize all players"
+                      />
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                          setNewBand({ name: '', basePrice: '', randomizePlayersOrder: false, players: [] });
+                          setSelectedBand(null);
+                          setIsEditingBand(false);
+                          setOpenBandDialog(true);
+                        }}
+                      >
+                        Add Band
+                      </Button>
+                    </Box>
+                  </Box>
                 </Box>
                 <List>
                   {bands.map((band, index) => (
@@ -599,99 +628,8 @@ const AuctionSetup = () => {
           </Grid>
         )}
 
-        {/* Players Section */}
-        {activeStep === 2 && (
-          <Grid item xs={12}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                  <Typography variant="h6">Add Players</Typography>
-                </Box>
-                <List>
-                  {bands.map((band, index) => (
-                    <React.Fragment key={band.id}>
-                      <ListItem>
-                        <ListItemText
-                          primary={band.name}
-                          secondary={
-                            <Typography component="span" variant="body2">
-                              Players: {band.players.length}
-                            </Typography>
-                          }
-                        />
-                        <Box>
-                          <IconButton
-                            onClick={() => handleBandExpand(band.id)}
-                            sx={{
-                              transform: expandedBands.includes(band.id) ? 'rotate(180deg)' : 'none',
-                              transition: 'transform 0.2s',
-                            }}
-                          >
-                            <ExpandMoreIcon />
-                          </IconButton>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={() => {
-                              setSelectedBand(band);
-                              setOpenPlayerDialog(true);
-                            }}
-                          >
-                            Add Players
-                          </Button>
-                        </Box>
-                      </ListItem>
-                      <Collapse in={expandedBands.includes(band.id)} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                          {band.players.map((player, playerIndex) => (
-                            <ListItem 
-                              key={player.id} 
-                              sx={{ pl: 4 }}
-                              secondaryAction={
-                                <IconButton
-                                  edge="end"
-                                  color="error"
-                                  onClick={() => handleRemovePlayerFromBand(band.id, player.id)}
-                                >
-                                  Remove
-                                </IconButton>
-                              }
-                            >
-                              <ListItemText
-                                primary={player.name}
-                                secondary={
-                                  <>
-                                    {player.photoUrl && (
-                                      <Typography component="span" variant="body2">
-                                        Photo: {player.photoUrl}
-                                      </Typography>
-                                    )}
-                                  </>
-                                }
-                              />
-                            </ListItem>
-                          ))}
-                          {band.players.length === 0 && (
-                            <ListItem sx={{ pl: 4 }}>
-                              <ListItemText
-                                primary="No players added yet"
-                                secondary="Click 'Add Players' to add players to this band"
-                              />
-                            </ListItem>
-                          )}
-                        </List>
-                      </Collapse>
-                      {index < bands.length - 1 && <Divider />}
-                    </React.Fragment>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-          </Grid>
-        )}
-
         {/* Review Section */}
-        {activeStep === 3 && (
+        {activeStep === 2 && (
           <Grid item xs={12}>
             <Card>
               <CardContent>
@@ -812,42 +750,117 @@ const AuctionSetup = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Add Band Dialog */}
-      <Dialog open={openBandDialog} onClose={handleCloseBandDialog}>
+      {/* Band Dialog */}
+      <Dialog
+        open={openBandDialog}
+        onClose={handleCloseBandDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>{isEditingBand ? 'Edit Band' : 'Add New Band'}</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Band Name"
-            fullWidth
-            value={newBand.name}
-            onChange={(e) => setNewBand({ ...newBand, name: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Base Price"
-            type="number"
-            fullWidth
-            value={newBand.basePrice}
-            onChange={(e) => setNewBand({ ...newBand, basePrice: e.target.value })}
-          />
+          <Box sx={{ mt: 2 }}>
+            <TextField
+              label="Band Name"
+              value={newBand.name}
+              onChange={(e) => setNewBand(prev => ({ ...prev, name: e.target.value }))}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Base Price"
+              type="number"
+              value={newBand.basePrice}
+              onChange={(e) => setNewBand(prev => ({ ...prev, basePrice: e.target.value }))}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <FormControl component="fieldset" sx={{ mb: 2 }}>
+              <label style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="checkbox"
+                  checked={randomizeAllPlayers ? true : newBand.randomizePlayersOrder}
+                  onChange={(e) => setNewBand(prev => ({ ...prev, randomizePlayersOrder: e.target.checked }))}
+                  disabled={randomizeAllPlayers}
+                  style={{ marginRight: '8px' }}
+                />
+                Randomize player order for this band
+              </label>
+            </FormControl>
+
+            <Typography variant="subtitle2" gutterBottom>
+              Players:
+            </Typography>
+            <List dense>
+              {newBand.players.map((player) => (
+                <ListItem key={player.id}>
+                  <ListItemText
+                    primary={player.name}
+                  />
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={() => {
+                      if (selectedBand?.id) {
+                        handleRemovePlayerFromBand(selectedBand.id, player.id);
+                      }
+                    }}
+                  >
+                    Remove
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+            <Box sx={{ mt: 2 }}>
+              <FormControl fullWidth size="small">
+                <InputLabel>Add Players</InputLabel>
+                <Select
+                  multiple
+                  value={selectedPlayerIds}
+                  label="Add Players"
+                  onChange={(e) => {
+                    const selectedIds = e.target.value as string[];
+                    setSelectedPlayerIds(selectedIds);
+                  }}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {(selected as string[]).map((value) => (
+                        <Chip 
+                          key={value} 
+                          label={availablePlayers.find(p => p.id === value)?.name} 
+                          size="small"
+                        />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {getAvailablePlayersForBand().map((player) => (
+                    <MenuItem key={player.id} value={player.id}>
+                      <Checkbox 
+                        checked={selectedPlayerIds.includes(player.id)}
+                      />
+                      <ListItemText primary={player.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseBandDialog}>Cancel</Button>
-          <Button onClick={handleAddBand} color="primary">
-            {isEditingBand ? 'Save Changes' : 'Add Band'}
+          <Button onClick={handleAddBand} variant="contained" color="primary">
+            {isEditingBand ? 'Update Band' : 'Add Band'}
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Add Players Dialog */}
+      {/* Player Dialog */}
       <Dialog
         open={openPlayerDialog}
         onClose={() => {
           setOpenPlayerDialog(false);
           setSelectedPlayerIds([]);
-          setRandomizePlayersOrder(false);
         }}
         maxWidth="sm"
         fullWidth
@@ -855,44 +868,76 @@ const AuctionSetup = () => {
         <DialogTitle>Add Players to {selectedBand?.name}</DialogTitle>
         <DialogContent>
           <Box sx={{ mt: 2 }}>
-            <FormControl component="fieldset" sx={{ mb: 2 }}>
-              <label style={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                  type="checkbox"
-                  checked={randomizePlayersOrder}
-                  onChange={(e) => setRandomizePlayersOrder(e.target.checked)}
-                  style={{ marginRight: '8px' }}
-                />
-                Randomize player order
-              </label>
-            </FormControl>
-            <FormControl fullWidth>
-              <InputLabel>Select Players</InputLabel>
-              <Select
-                multiple
-                value={selectedPlayerIds}
-                onChange={(e) => setSelectedPlayerIds(typeof e.target.value === 'string' ? [e.target.value] : e.target.value)}
-                renderValue={(selected) => {
-                  const selectedPlayers = availablePlayers
-                    .filter(player => selected.includes(player.id))
-                    .map(player => player.name);
-                  return selectedPlayers.join(', ');
-                }}
-              >
-                {getAvailablePlayersForBand().map((player) => (
-                  <MenuItem key={player.id} value={player.id}>
-                    {player.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Typography variant="subtitle2" gutterBottom>
+              Players:
+            </Typography>
+            <List dense>
+              {newBand.players.map((player) => (
+                <ListItem key={player.id}>
+                  <ListItemText
+                    primary={player.name}
+                  />
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={() => {
+                      if (selectedBand?.id) {
+                        handleRemovePlayerFromBand(selectedBand.id, player.id);
+                      }
+                    }}
+                  >
+                    Remove
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+            <Box sx={{ mt: 2 }}>
+              <FormControl fullWidth size="small">
+                <InputLabel>Add Players</InputLabel>
+                <Select
+                  multiple
+                  value={[]}
+                  label="Add Players"
+                  onChange={(e) => {
+                    const selectedPlayerIds = e.target.value as string[];
+                    selectedPlayerIds.forEach(playerId => {
+                      const player = availablePlayers.find(p => p.id === playerId);
+                      if (player) {
+                        handleAddPlayersToBand();
+                      }
+                    });
+                  }}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {(selected as string[]).map((value) => (
+                        <Chip 
+                          key={value} 
+                          label={availablePlayers.find(p => p.id === value)?.name} 
+                          size="small"
+                        />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {availablePlayers
+                    .filter(player => !newBand.players.some(p => p.id === player.id))
+                    .map((player) => (
+                      <MenuItem key={player.id} value={player.id}>
+                        <Checkbox 
+                          checked={newBand.players.some(p => p.id === player.id)}
+                        />
+                        <ListItemText primary={player.name} />
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+            </Box>
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {
             setOpenPlayerDialog(false);
             setSelectedPlayerIds([]);
-            setRandomizePlayersOrder(false);
           }}>
             Cancel
           </Button>

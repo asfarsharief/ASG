@@ -30,9 +30,9 @@ import localforage from 'localforage';
 function getCommonElements<T>(list1: T[], list2: T[]): T[] {
   const set2 = new Set(list2);
   var res = list1.filter(item => set2.has(item));
-  console.log("band: ", list1)
-  console.log("available: ", list2)
-  console.log("res: ", res)
+  // console.log("band: ", list1)
+  // console.log("available: ", list2)
+  // console.log("res: ", res)
   return res
 }
 
@@ -49,7 +49,7 @@ const Auction = () => {
   const [highestBid, setHighestBid] = useState<{ teamId: string; amount: number } | null>(null);
   const [showRoundCompleteDialog, setShowRoundCompleteDialog] = useState(false);
   const [unsoldPlayersCount, setUnsoldPlayersCount] = useState(0);
-  const [randomizeNextRound, setRandomizeNextRound] = useState(false);
+  const [randomizeNextRound, setRandomizeNextRound] = useState(true);
   const [lastAction, setLastAction] = useState<{
     type: 'sold' | 'skipped';
     player: Player;
@@ -89,7 +89,7 @@ const Auction = () => {
       if (storedAuctions && typeof storedAuctions === 'string') {
         const auctions = JSON.parse(storedAuctions);
         const currentAuction = auctions.find((a: AuctionState) => a.id === id);
-
+        console.log("currentAuction: ", currentAuction)
         if (currentAuction) {
           setAuctionState(currentAuction);
           setTeams(currentAuction.teams);
@@ -105,9 +105,11 @@ const Auction = () => {
             const availablePlayers = currentAuction.bands.flatMap((band: AuctionBand) => 
               band.players.filter((player: Player) => player.status === 'available')
             );
-            const shuffledPlayers = currentAuction.currentRound === 1 && currentAuction.randomizePlayersOrder
+            console.log("availablePlayers: ", availablePlayers)
+            const shuffledPlayers = currentAuction.randomizeAllPlayers
               ? [...availablePlayers].sort(() => Math.random() - 0.5)
               : availablePlayers;
+            
             console.log("SHUFFLING: ",currentAuction.currentRound === 1 , currentAuction.randomizePlayersOrder, currentAuction.currentRound === 1 && currentAuction.randomizePlayersOrder, shuffledPlayers)
             setAvailablePlayers(shuffledPlayers);
             setCurrentPlayer(shuffledPlayers[0] || null);
@@ -152,20 +154,20 @@ const Auction = () => {
   }, [currentPlayer, availablePlayers]);
 
   const extractUpcomingPlayers = (): Player[] => {
-    let playersInBand: Player[] = [];
+    let playersInBand = bands.flatMap(band => band.players);
 
-    for (const band of bands) {
-      playersInBand = band.players.filter(
-        player => currentPlayer && player.band === currentPlayer.band
-      );
-      break; // Only process the first band
-    }
+    // for (const band of bands) {
+    //   playersInBand = band.players.filter(
+    //     player => currentPlayer && player.band === currentPlayer.band
+    //   );
+    //   break; // Only process the first band
+    // }
 
-    const availablePlayers = upcomingPlayers.filter(
-      player => currentPlayer && player.band === currentPlayer.band
-    );
+    // const availablePlayers = upcomingPlayers.filter(
+    //   player => currentPlayer
+    // );
 
-    return getCommonElements(playersInBand, availablePlayers);
+    return getCommonElements(playersInBand, upcomingPlayers);
   }
 
   const handleStartAuction2 = () => {
@@ -179,36 +181,34 @@ const Auction = () => {
     if (!auctionState) return;
 
     // Initialize available players from first band
-    const firstBand = auctionState.bands[0];
-    console.log("First Band: ", firstBand);
+    // const firstBand = auctionState.bands[0];
+    // // console.log("First Band: ", firstBand);
 
-    if (firstBand) {
-      // For first round, show all available players in random order if randomizePlayersOrder is true
-      const initialPlayers = firstBand.players.filter(p => 
-        p.status === 'available' && 
-        (auctionState.currentRound === 1 || Object.values(auctionState.unsoldPlayers).flat().some(up => up.id === p.id))
-      );
+    // if (firstBand) {
+    //   // For first round, show all available players in random order if randomizePlayersOrder is true
+    //   const initialPlayers = firstBand.players.filter(p => 
+    //     p.status === 'available' && 
+    //     (auctionState.currentRound === 1 || Object.values(auctionState.unsoldPlayers).flat().some(up => up.id === p.id))
+    //   );
 
-      // Randomize the order for round 1 if randomizePlayersOrder is true
-      const shuffledPlayers = auctionState.currentRound === 1 && auctionState.randomizePlayersOrder
-        ? [...initialPlayers].sort(() => Math.random() - 0.5)
-        : initialPlayers;
+    //   // Randomize the order for round 1 if randomizePlayersOrder is true
+    //   const shuffledPlayers = auctionState.currentRound === 1 && auctionState.randomizePlayersOrder
+    //     ? [...initialPlayers].sort(() => Math.random() - 0.5)
+    //     : initialPlayers;
 
-      setAvailablePlayers(shuffledPlayers);
-      setCurrentPlayer(shuffledPlayers[0] || null);
-      setUpcomingPlayers(shuffledPlayers.slice(1));
-      console.log("random 1: ", shuffledPlayers);
-      setAuctionState(prev => ({
-        ...prev,
-        currentBand: firstBand.id
-      }));
-    }
+    //   setAvailablePlayers(shuffledPlayers);
+    //   setCurrentPlayer(shuffledPlayers[0] || null);
+    //   setUpcomingPlayers(shuffledPlayers.slice(1));
+    //   console.log("random 1: ", shuffledPlayers);
+    //   setAuctionState(prev => ({
+    //     ...prev,
+    //     currentBand: firstBand.id
+    //   }));
+    // }
 
     const updatedState = {
       ...auctionState,
-      status: 'in_progress' as const,
-      currentBand: firstBand?.id || 1,
-    };
+      status: 'in_progress' as const};
     setAuctionState(updatedState);
     
     // Update auction in localForage
@@ -266,6 +266,15 @@ const Auction = () => {
 
   const handleCustomBidChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewBid(e.target.value);
+  };
+
+  const handleResetBid = () => {
+    if (!currentPlayer) return;
+    const currentBand = bands.find(band => band.id === currentPlayer.band);
+    if (currentBand) {
+      setCurrentBid(currentBand.basePrice.toString());
+      setNewBid(currentBand.basePrice.toString());
+    }
   };
 
   const handleSellPlayer = () => {
@@ -424,37 +433,21 @@ const Auction = () => {
     // Update available players
     const updatedAvailablePlayers = availablePlayers.filter(p => p.id !== currentPlayer.id);
     
-    // Get next player from current band
-    const nextPlayerInBand = updatedAvailablePlayers.find(p => p.band === currentPlayer.band);
+    // Get next player
+    const nextPlayer = updatedAvailablePlayers[0];
+    // if (nextPlayer) {
+    //   const nextBand = updatedBands.find(band => band.id === nextPlayer.band);
+    //   if (nextBand) {
+    //     setCurrentBid(nextBand.basePrice.toString());
+    //   }
+    // }
+    setAvailablePlayers(updatedAvailablePlayers);
+    setCurrentPlayer(nextPlayer || null);
 
-    if (nextPlayerInBand) {
-      // Continue with next player in current band
-      setAvailablePlayers(updatedAvailablePlayers);
-      setCurrentPlayer(nextPlayerInBand);
-      setUpcomingPlayers(updatedAvailablePlayers.filter(p => p.band === currentPlayer.band));
-    } else {
-      // Current band is complete, find next band
-      const currentBandIndex = bands.findIndex(b => b.id === currentPlayer.band);
-      const nextBand = bands[currentBandIndex + 1];
-      
-      if (nextBand) {
-        // Move to next band
-        const nextBandPlayers = nextBand.players.filter(p => p.status === 'available');
-        setAvailablePlayers(nextBandPlayers);
-        setCurrentPlayer(nextBandPlayers[0] || null);
-        setUpcomingPlayers(nextBandPlayers.slice(1));
-        setAuctionState(prev => ({
-          ...prev,
-          currentBand: nextBand.id
-        }));
-      } else {
-        // Round complete
-        const totalUnsold = Object.values(updatedUnsoldPlayers).flat().length;
-        setUnsoldPlayersCount(totalUnsold);
-        setShowRoundCompleteDialog(true);
-      }
-    }
-
+    // const totalUnsold = Object.values(updatedUnsoldPlayers).flat().length;
+    // setUnsoldPlayersCount(totalUnsold);
+    // setShowRoundCompleteDialog(true);
+    console.log("updatedUnsoldPlayers: ", updatedUnsoldPlayers)
     // Update auction state
     const updatedState = {
       ...auctionState,
@@ -473,6 +466,32 @@ const Auction = () => {
       }
     });
 
+    // Check if there are no more available players AND no skipped players
+    const skippedPlayers = Object.values(auctionState.unsoldPlayers).flat();
+    if (updatedAvailablePlayers.length === 0 && skippedPlayers.length === 0) {
+      const completedState = {
+        ...updatedState,
+        status: 'completed' as const,
+      };
+      setAuctionState(completedState);
+      
+      // Update auction status in localForage
+      localforage.getItem('auctions').then((storedAuctions) => {
+        if (storedAuctions && typeof storedAuctions === 'string') {
+          const auctions = JSON.parse(storedAuctions);
+          const finalAuctions = auctions.map((a: AuctionState) => 
+            a.id === id ? completedState : a
+          );
+          localforage.setItem('auctions', JSON.stringify(finalAuctions));
+        }
+      });
+    } else if (updatedAvailablePlayers.length === 0) {
+      // If no more available players but there are skipped players, show round complete dialog
+      const totalUnsold = Object.values(auctionState.unsoldPlayers).flat().length;
+      setUnsoldPlayersCount(totalUnsold);
+      setShowRoundCompleteDialog(true);
+    }
+
     // After all state updates, store the last action
     setLastAction({
       type: 'skipped',
@@ -483,6 +502,7 @@ const Auction = () => {
 
   const handleContinueWithSameBands = () => {
     // Get all unsold players from the previous round
+    console.log("handleContinueWithSameBands ...")
     const unsoldPlayerIds = new Set(
       Object.values(auctionState.unsoldPlayers)
         .flat()
@@ -500,9 +520,14 @@ const Auction = () => {
     }));
 
     // Get all available players from all bands
-    const allAvailablePlayers = updatedBands.flatMap(band =>
+    let allAvailablePlayers = updatedBands.flatMap(band =>
       band.players.filter(p => p.status === 'available' && unsoldPlayerIds.has(p.id))
     );
+
+    // Randomize order if checkbox was selected
+    if (randomizeNextRound) {
+      allAvailablePlayers = [...allAvailablePlayers].sort(() => Math.random() - 0.5);
+    }
 
     // Start with first band's unsold players
     const firstBand = updatedBands[0];
@@ -512,6 +537,7 @@ const Auction = () => {
       setAvailablePlayers(allAvailablePlayers);
       setCurrentPlayer(firstBandPlayers[0] || allAvailablePlayers[0]);
       setUpcomingPlayers(allAvailablePlayers.slice(1));
+      console.log("random 3: ", allAvailablePlayers, upcomingPlayers)
     } else {
       // If no players are available, complete the auction
       const completedState = {
@@ -541,6 +567,7 @@ const Auction = () => {
       currentRound: auctionState.currentRound + 1,
       unsoldPlayers: {},
       currentBand: firstBand?.id || 1,
+      status: 'in_progress' as const
     };
     setAuctionState(updatedState);
     setShowRoundCompleteDialog(false);
@@ -571,15 +598,18 @@ const Auction = () => {
 
   const handleAddBand = () => {
     const newBandId = Math.max(...editingBands.map(b => b.id), 0) + 1;
-    setEditingBands(prevBands => [...prevBands, {
+    const newBand: AuctionBand = {
       id: newBandId,
       name: `Band ${newBandId}`,
       basePrice: 10,
-      players: []
-    }]);
+      players: [],
+      randomizePlayersOrder: false
+    };
+    setEditingBands(prevBands => [...prevBands, newBand]);
   };
 
   const handleSaveBands = () => {
+    console.log("handleSaveBands ...")
     // Get all sold players from current bands
     const soldPlayers = bands.flatMap(band => 
       band.players.filter(player => player.status === 'sold')
@@ -615,7 +645,7 @@ const Auction = () => {
       setAvailablePlayers(allAvailablePlayers);
       setCurrentPlayer(firstBandPlayers[0] || allAvailablePlayers[0]);
       setUpcomingPlayers(allAvailablePlayers.slice(1));
-      console.log("random 2: ", allAvailablePlayers)
+      console.log("random 2: ", allAvailablePlayers, upcomingPlayers)
 
       // Update auction state for next round
       const updatedState = {
@@ -895,9 +925,9 @@ const Auction = () => {
                   Round {auctionState.currentRound}
                 </Typography>
                 <Divider orientation="vertical" flexItem />
-                <Typography variant="h6">
+                {/* <Typography variant="h6">
                   Current Band: {bands.find(b => b.id === currentPlayer?.band)?.name || 'None'}
-                </Typography>
+                </Typography> */}
               </Box>
             )}
           </>
@@ -908,7 +938,7 @@ const Auction = () => {
       {auctionState.status !== 'completed' && (
         <Box sx={{ mb: 4 }}>
           <Typography variant="h6" gutterBottom>
-            Upcoming Players in Current Band
+            Upcoming Players
           </Typography>
           <Box sx={{ 
             display: 'flex', 
@@ -1056,10 +1086,10 @@ const Auction = () => {
                             </Button>
                             <Button
                               variant="outlined"
-                              onClick={() => handleIncrementBid(4)}
+                              onClick={() => handleIncrementBid(3)}
                               disabled={!biddingStarted}
                             >
-                              +4
+                              +3
                             </Button>
                             <Button
                               variant="outlined"
@@ -1068,16 +1098,28 @@ const Auction = () => {
                             >
                               +5
                             </Button>
-                            <TextField
-                              label="Custom Bid"
-                              type="number"
-                              value={currentBid}
-                              onChange={handleCustomBidChange}
-                              size="small"
-                              sx={{ width: 120 }}
-                              inputProps={{ min: Number(currentBid) + 1 }}
+                            <Box sx={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              minWidth: 120,
+                              px: 2,
+                              border: 1,
+                              borderColor: 'divider',
+                              borderRadius: 1,
+                              bgcolor: 'background.paper'
+                            }}>
+                              <Typography variant="body1">
+                                {currentBid} Cr.
+                              </Typography>
+                            </Box>
+                            <Button
+                              variant="outlined"
+                              color="secondary"
+                              onClick={handleResetBid}
                               disabled={!biddingStarted}
-                            />
+                            >
+                              Reset Bid
+                            </Button>
                           </Box>
                           {!highestBid && (
                             <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
@@ -1236,7 +1278,16 @@ const Auction = () => {
       </Box>
 
       {/* Round Complete Dialog */}
-      <Dialog open={showRoundCompleteDialog} onClose={() => setShowRoundCompleteDialog(false)}>
+      <Dialog 
+        open={showRoundCompleteDialog} 
+        onClose={(event, reason) => {
+          // Only allow closing through the action buttons
+          if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+            return;
+          }
+          setShowRoundCompleteDialog(false);
+        }}
+      >
         <DialogTitle>Round {auctionState.currentRound} Complete</DialogTitle>
         <DialogContent>
           <Typography>
@@ -1248,10 +1299,7 @@ const Auction = () => {
             Exit Auction
           </Button>
           <Button onClick={handleEditBands} color="primary">
-            Edit Bands
-          </Button>
-          <Button onClick={handleContinueWithSameBands} color="success">
-            Continue with Same Bands
+            Review Next Round
           </Button>
         </DialogActions>
       </Dialog>
@@ -1292,7 +1340,6 @@ const Auction = () => {
                     />
                     <TextField
                       label="Base Price"
-                      type="number"
                       value={band.basePrice}
                       onChange={(e) => handleUpdateBand(band.id, { basePrice: Number(e.target.value) })}
                       size="small"

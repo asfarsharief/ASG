@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ThemeProvider, createTheme, AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import AuctionSetup from './pages/AuctionSetup';
 import Auction from './pages/Auction';
 import Players from './pages/Players';
+import DataManagement from './pages/DataManagement';
+import { setupStorageSync, loadStorageFromBackup } from './utils/storage';
 
 const theme = createTheme({
   palette: {
@@ -20,6 +22,19 @@ const theme = createTheme({
 });
 
 function App() {
+  useEffect(() => {
+    // Load data from backup on startup
+    loadStorageFromBackup();
+    
+    // Setup storage sync
+    const observer = setupStorageSync();
+    
+    // Cleanup observer on unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -35,8 +50,8 @@ function App() {
             <Button color="inherit" component={Link} to="/players">
               Players
             </Button>
-            <Button color="inherit" component={Link} to="/auction">
-              Auction
+            <Button color="inherit" component={Link} to="/data">
+              Data Management
             </Button>
           </Toolbar>
         </AppBar>
@@ -46,6 +61,7 @@ function App() {
             <Route path="/auction/:id" element={<Auction />} />
             <Route path="/auction/:id/setup" element={<AuctionSetup />} />
             <Route path="/players" element={<Players />} />
+            <Route path="/data" element={<DataManagement />} />
           </Routes>
         </Container>
       </Router>
