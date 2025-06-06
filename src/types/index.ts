@@ -55,6 +55,7 @@ export interface AuctionBand {
   name: string;
   basePrice: number;
   players: Player[];
+  randomizePlayersOrder: boolean;
 }
 
 export interface AuctionState {
