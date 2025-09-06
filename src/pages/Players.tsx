@@ -24,16 +24,21 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Player } from '../types';
-import localforage from 'localforage';
+import { playerApi, ApiError } from '../services/api';
+import { transformPlayerFromBackend, transformPlayerToBackend, createDefaultBasketballStats } from '../utils/dataTransform';
+import LoadingError from '../components/LoadingError';
 
 const Players = () => {
   const [players, setPlayers] = useState<Player[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [newPlayer, setNewPlayer] = useState<{
     name: string;
     photoUrl: string | undefined;
+    band: number;
     basketballStats: {
       winPercentage: number;
       pointsAverage: number;
@@ -51,68 +56,63 @@ const Players = () => {
   }>({
     name: '',
     photoUrl: undefined,
-    basketballStats: {
-      winPercentage: 0,
-      pointsAverage: 0,
-      fieldGoalPercentage: 0,
-      threePointPercentage: 0,
-      freeThrowPercentage: 0,
-      reboundsAverage: 0,
-      assistsAverage: 0,
-      stealsAverage: 0,
-      blocksAverage: 0,
-      turnoversAverage: 0,
-      gamesPlayed: 0,
-      minutesPerGame: 0,
-    },
+    band: 1,
+    basketballStats: createDefaultBasketballStats(),
   });
 
   useEffect(() => {
-    // Load players from localForage
-    localforage.getItem<Player[]>('players').then((storedPlayers) => {
-      if (Array.isArray(storedPlayers)) {
-        setPlayers(storedPlayers);
-      } else if (storedPlayers && typeof storedPlayers === 'string') {
-        // Handle legacy JSON string format
-        setPlayers(JSON.parse(storedPlayers));
-      }
-    });
+    loadPlayers();
   }, []);
 
-  const handleAddPlayer = () => {
+  const loadPlayers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const backendPlayers = await playerApi.getPlayers();
+      const transformedPlayers = backendPlayers.map(transformPlayerFromBackend);
+      setPlayers(transformedPlayers);
+    } catch (err) {
+      console.error('Error loading players:', err);
+      setError(err instanceof ApiError ? err.message : 'Failed to load players');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddPlayer = async () => {
     if (!newPlayer.name) return;
 
-    if (isEditing && selectedPlayer) {
-      // Update existing player
-      const updatedPlayers = players.map(player =>
-        player.id === selectedPlayer.id
-          ? {
-              ...player,
-              name: newPlayer.name,
-              photoUrl: newPlayer.photoUrl,
-              basketballStats: newPlayer.basketballStats,
-            }
-          : player
-      );
-      setPlayers(updatedPlayers);
-      localforage.setItem('players', updatedPlayers);
-    } else {
-      // Add new player
-      const player: Player = {
-        id: Date.now().toString(),
+    try {
+      setLoading(true);
+      setError(null);
+
+      const playerData = transformPlayerToBackend({
         name: newPlayer.name,
         photoUrl: newPlayer.photoUrl,
-        band: 0, // This will be set when added to a band
+        band: newPlayer.band,
         status: 'available',
         basketballStats: newPlayer.basketballStats,
-      };
+      });
 
-      const updatedPlayers = [...players, player];
-      setPlayers(updatedPlayers);
-      localforage.setItem('players', updatedPlayers);
+      if (isEditing && selectedPlayer) {
+        // Update existing player
+        const updatedPlayer = await playerApi.updatePlayer(selectedPlayer.id, playerData);
+        const transformedPlayer = transformPlayerFromBackend(updatedPlayer);
+        setPlayers(players.map(p => p.id === selectedPlayer.id ? transformedPlayer : p));
+      } else {
+        // Add new player
+        const newPlayerData = await playerApi.createPlayer(playerData);
+        const transformedPlayer = transformPlayerFromBackend(newPlayerData);
+        setPlayers([...players, transformedPlayer]);
+      }
+
+      handleCloseDialog();
+    } catch (err) {
+      console.error('Error saving player:', err);
+      setError(err instanceof ApiError ? err.message : 'Failed to save player');
+    } finally {
+      setLoading(false);
     }
-
-    handleCloseDialog();
   };
 
   const handleEditPlayer = (player: Player) => {
@@ -120,30 +120,26 @@ const Players = () => {
     setNewPlayer({
       name: player.name,
       photoUrl: player.photoUrl,
-      basketballStats: player.basketballStats || {
-        winPercentage: 0,
-        pointsAverage: 0,
-        fieldGoalPercentage: 0,
-        threePointPercentage: 0,
-        freeThrowPercentage: 0,
-        reboundsAverage: 0,
-        assistsAverage: 0,
-        stealsAverage: 0,
-        blocksAverage: 0,
-        turnoversAverage: 0,
-        gamesPlayed: 0,
-        minutesPerGame: 0,
-      },
+      band: player.band,
+      basketballStats: player.basketballStats || createDefaultBasketballStats(),
     });
     setIsEditing(true);
     setOpenDialog(true);
   };
 
-  const handleDeletePlayer = (playerId: string) => {
+  const handleDeletePlayer = async (playerId: string) => {
     if (window.confirm('Are you sure you want to delete this player?')) {
-      const updatedPlayers = players.filter(player => player.id !== playerId);
-      setPlayers(updatedPlayers);
-      localforage.setItem('players', updatedPlayers);
+      try {
+        setLoading(true);
+        setError(null);
+        await playerApi.deletePlayer(playerId);
+        setPlayers(players.filter(player => player.id !== playerId));
+      } catch (err) {
+        console.error('Error deleting player:', err);
+        setError(err instanceof ApiError ? err.message : 'Failed to delete player');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -152,20 +148,8 @@ const Players = () => {
     setNewPlayer({ 
       name: '', 
       photoUrl: undefined,
-      basketballStats: {
-        winPercentage: 0,
-        pointsAverage: 0,
-        fieldGoalPercentage: 0,
-        threePointPercentage: 0,
-        freeThrowPercentage: 0,
-        reboundsAverage: 0,
-        assistsAverage: 0,
-        stealsAverage: 0,
-        blocksAverage: 0,
-        turnoversAverage: 0,
-        gamesPlayed: 0,
-        minutesPerGame: 0,
-      },
+      band: 1,
+      basketballStats: createDefaultBasketballStats(),
     });
     setIsEditing(false);
     setSelectedPlayer(null);
@@ -186,6 +170,7 @@ const Players = () => {
             setNewPlayer({ 
               name: '', 
               photoUrl: undefined,
+              band: 1,
               basketballStats: {
                 winPercentage: 0,
                 pointsAverage: 0,
@@ -208,83 +193,97 @@ const Players = () => {
         </Button>
       </Box>
 
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Total Players: {players.length}
-          </Typography>
-          <List>
-            {players.map((player, index) => (
-              <React.Fragment key={player.id}>
-                <ListItem
-                  secondaryAction={
-                    <Box>
-                      <IconButton
-                        edge="end"
-                        onClick={() => handleEditPlayer(player)}
-                        sx={{ mr: 1 }}
-                      >
-                        Edit
-                      </IconButton>
-                      <IconButton
-                        edge="end"
-                        color="error"
-                        onClick={() => handleDeletePlayer(player.id)}
-                      >
-                        Delete
-                      </IconButton>
-                    </Box>
-                  }
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                    <Avatar
-                      src={player.photoUrl}
-                      alt={player.name}
-                      sx={{ width: 56, height: 56, mr: 2 }}
-                    />
-                    <Box sx={{ flexGrow: 1 }}>
-                      <Typography variant="h6" component="div">
-                        {index + 1}. {player.name}
-                      </Typography>
-                      {player.basketballStats && (
+      <LoadingError loading={loading} error={error} onRetry={loadPlayers}>
+        <Card>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Total Players: {players.length}
+            </Typography>
+            <List>
+              {players.map((player, index) => (
+                <React.Fragment key={player.id}>
+                  <ListItem
+                    secondaryAction={
+                      <Box>
+                        <IconButton
+                          edge="end"
+                          onClick={() => handleEditPlayer(player)}
+                          sx={{ mr: 1 }}
+                        >
+                          Edit
+                        </IconButton>
+                        <IconButton
+                          edge="end"
+                          color="error"
+                          onClick={() => handleDeletePlayer(player.id)}
+                        >
+                          Delete
+                        </IconButton>
+                      </Box>
+                    }
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <Avatar
+                        src={player.photoUrl}
+                        alt={player.name}
+                        sx={{ width: 56, height: 56, mr: 2 }}
+                      />
+                      <Box sx={{ flexGrow: 1 }}>
+                        <Typography variant="h6" component="div">
+                          {index + 1}. {player.name}
+                        </Typography>
                         <Box sx={{ display: 'flex', gap: 1, mt: 1, flexWrap: 'wrap' }}>
                           <Chip 
-                            label={`${player.basketballStats.pointsAverage} PPG`} 
+                            label={`Band ${player.band}`} 
                             size="small" 
-                            color="primary" 
+                            color="default" 
                           />
                           <Chip 
-                            label={`${player.basketballStats.fieldGoalPercentage}% FG`} 
+                            label={player.status} 
                             size="small" 
-                            color="secondary" 
+                            color={player.status === 'available' ? 'success' : 'warning'} 
                           />
-                          <Chip 
-                            label={`${player.basketballStats.winPercentage}% Win`} 
-                            size="small" 
-                            color="success" 
-                          />
-                          <Chip 
-                            label={`${player.basketballStats.gamesPlayed} Games`} 
-                            size="small" 
-                            variant="outlined" 
-                          />
+                          {player.basketballStats && (
+                            <>
+                              <Chip 
+                                label={`${player.basketballStats.pointsAverage} PPG`} 
+                                size="small" 
+                                color="primary" 
+                              />
+                              <Chip 
+                                label={`${player.basketballStats.fieldGoalPercentage}% FG`} 
+                                size="small" 
+                                color="secondary" 
+                              />
+                              <Chip 
+                                label={`${player.basketballStats.winPercentage}% Win`} 
+                                size="small" 
+                                color="success" 
+                              />
+                              <Chip 
+                                label={`${player.basketballStats.gamesPlayed} Games`} 
+                                size="small" 
+                                variant="outlined" 
+                              />
+                            </>
+                          )}
                         </Box>
-                      )}
+                      </Box>
                     </Box>
-                  </Box>
-                </ListItem>
-                {index < players.length - 1 && <Divider />}
-              </React.Fragment>
-            ))}
-          </List>
-        </CardContent>
-      </Card>
+                  </ListItem>
+                  {index < players.length - 1 && <Divider />}
+                </React.Fragment>
+              ))}
+            </List>
+          </CardContent>
+        </Card>
+      </LoadingError>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
         <DialogTitle>{isEditing ? 'Edit Player' : 'Add New Player'}</DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <TextField
                 autoFocus
                 margin="dense"
@@ -294,13 +293,24 @@ const Players = () => {
                 onChange={(e) => setNewPlayer({ ...newPlayer, name: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <TextField
                 margin="dense"
                 label="Photo URL"
                 fullWidth
                 value={newPlayer.photoUrl || ''}
                 onChange={(e) => setNewPlayer({ ...newPlayer, photoUrl: e.target.value || undefined })}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                margin="dense"
+                label="Band"
+                type="number"
+                fullWidth
+                value={newPlayer.band}
+                onChange={(e) => setNewPlayer({ ...newPlayer, band: Number(e.target.value) || 1 })}
+                inputProps={{ min: 1, max: 10 }}
               />
             </Grid>
           </Grid>

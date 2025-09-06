@@ -35,6 +35,21 @@ export interface Team {
   players: Player[];
 }
 
+export interface BasketballStats {
+  winPercentage: number; // Win percentage (0-100)
+  pointsAverage: number; // Points per game
+  fieldGoalPercentage: number; // Field goal percentage (0-100)
+  threePointPercentage: number; // Three-point percentage (0-100)
+  freeThrowPercentage: number; // Free throw percentage (0-100)
+  reboundsAverage: number; // Rebounds per game
+  assistsAverage: number; // Assists per game
+  stealsAverage: number; // Steals per game
+  blocksAverage: number; // Blocks per game
+  turnoversAverage: number; // Turnovers per game
+  gamesPlayed: number; // Total games played
+  minutesPerGame: number; // Minutes per game
+}
+
 export interface Player {
   id: string;
   name: string;
@@ -49,20 +64,7 @@ export interface Player {
   soldFromBandBasePrice?: number;
   skipped?: boolean;
   // Basketball Stats
-  basketballStats?: {
-    winPercentage: number; // Win percentage (0-100)
-    pointsAverage: number; // Points per game
-    fieldGoalPercentage: number; // Field goal percentage (0-100)
-    threePointPercentage: number; // Three-point percentage (0-100)
-    freeThrowPercentage: number; // Free throw percentage (0-100)
-    reboundsAverage: number; // Rebounds per game
-    assistsAverage: number; // Assists per game
-    stealsAverage: number; // Steals per game
-    blocksAverage: number; // Blocks per game
-    turnoversAverage: number; // Turnovers per game
-    gamesPlayed: number; // Total games played
-    minutesPerGame: number; // Minutes per game
-  };
+  basketballStats?: BasketballStats;
 }
 
 export interface AuctionBand {
@@ -121,7 +123,7 @@ export interface Game {
   awayTeamName: string;
   homeScore: number;
   awayScore: number;
-  gameResult: 'home_win' | 'away_win';
+  gameResult: 'home_win' | 'away_win' | 'tie';
   playerStats: PlayerGameStats[];
 }
 
