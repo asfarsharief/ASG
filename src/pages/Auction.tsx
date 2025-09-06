@@ -765,14 +765,26 @@ const Auction = () => {
 
       // Create team sheet data
       const teamData = [
-        ['Player Name', 'Role', 'Band', 'Base Price', 'Round Selected', 'Final Price'],
+        ['Player Name', 'Role', 'Band', 'Base Price', 'Round Selected', 'Final Price', 'PPG', 'FG%', '3P%', 'FT%', 'RPG', 'APG', 'SPG', 'BPG', 'TOPG', 'Games', 'MPG', 'Win%'],
         ...allPlayers.map(player => [
           `${player.name}${player.name === team.captain ? ' (c)' : ''}${player.name === team.viceCaptain ? ' (vc)' : ''}`,
           player.name === team.captain ? 'Captain' : (player.name === team.viceCaptain ? 'Vice Captain' : 'Player'),
           player.soldFromBandName || 'N/A',
           player.soldFromBandBasePrice || 0,
           player.soldInRound || 0,
-          player.soldPrice || 0
+          player.soldPrice || 0,
+          player.basketballStats?.pointsAverage || 0,
+          player.basketballStats?.fieldGoalPercentage || 0,
+          player.basketballStats?.threePointPercentage || 0,
+          player.basketballStats?.freeThrowPercentage || 0,
+          player.basketballStats?.reboundsAverage || 0,
+          player.basketballStats?.assistsAverage || 0,
+          player.basketballStats?.stealsAverage || 0,
+          player.basketballStats?.blocksAverage || 0,
+          player.basketballStats?.turnoversAverage || 0,
+          player.basketballStats?.gamesPlayed || 0,
+          player.basketballStats?.minutesPerGame || 0,
+          player.basketballStats?.winPercentage || 0
         ])
       ];
 
@@ -960,14 +972,27 @@ const Auction = () => {
               <Card key={player.id} sx={{ minWidth: 200 }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    {player.photoUrl && (
-                      <Avatar
-                        src={player.photoUrl}
-                        alt={player.name}
-                        sx={{ width: 40, height: 40, mr: 1 }}
-                      />
-                    )}
-                    <Typography variant="subtitle1">{player.name}</Typography>
+                    <Avatar
+                      src={player.photoUrl}
+                      alt={player.name}
+                      sx={{ width: 40, height: 40, mr: 1 }}
+                    />
+                    <Box>
+                      <Typography variant="subtitle1">{player.name}</Typography>
+                      {player.basketballStats && (
+                        <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5 }}>
+                          <Typography variant="caption" color="primary">
+                            {player.basketballStats.pointsAverage} PPG
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            •
+                          </Typography>
+                          <Typography variant="caption" color="secondary">
+                            {player.basketballStats.fieldGoalPercentage}% FG
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
                   <Typography variant="body2" color="text.secondary">
                     Band: {bands.find(band => band.id === player.band)?.name || 'Unknown'}
@@ -1039,13 +1064,11 @@ const Auction = () => {
                 {currentPlayer ? (
                   <>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      {currentPlayer.photoUrl && (
-                        <Avatar
-                          src={currentPlayer.photoUrl}
-                          alt={currentPlayer.name}
-                          sx={{ width: 56, height: 56, mr: 2 }}
-                        />
-                      )}
+                      <Avatar
+                        src={currentPlayer.photoUrl}
+                        alt={currentPlayer.name}
+                        sx={{ width: 56, height: 56, mr: 2 }}
+                      />
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}>
                         <Typography variant="h6">
                           {isNameVisible ? currentPlayer.name : '******'}
@@ -1056,6 +1079,22 @@ const Auction = () => {
                         <Typography variant="body2" color="text.secondary">
                           Band: {bands.find(band => band.id === currentPlayer.band)?.name || 'Unknown'}
                         </Typography>
+                        {isNameVisible && currentPlayer.basketballStats && (
+                          <Box sx={{ display: 'flex', gap: 1, mt: 1, flexWrap: 'wrap' }}>
+                            <Typography variant="caption" color="primary">
+                              {currentPlayer.basketballStats.pointsAverage} PPG
+                            </Typography>
+                            <Typography variant="caption" color="secondary">
+                              {currentPlayer.basketballStats.fieldGoalPercentage}% FG
+                            </Typography>
+                            <Typography variant="caption" color="success.main">
+                              {currentPlayer.basketballStats.winPercentage}% Win
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              {currentPlayer.basketballStats.gamesPlayed} Games
+                            </Typography>
+                          </Box>
+                        )}
                       </Box>
                     </Box>
                     {auctionState.status === 'setup' && (
@@ -1259,14 +1298,27 @@ const Auction = () => {
               <Card key={player.id} sx={{ minWidth: 200 }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    {player.photoUrl && (
-                      <Avatar
-                        src={player.photoUrl}
-                        alt={player.name}
-                        sx={{ width: 40, height: 40, mr: 1 }}
-                      />
-                    )}
-                    <Typography variant="subtitle1">{player.name}</Typography>
+                    <Avatar
+                      src={player.photoUrl}
+                      alt={player.name}
+                      sx={{ width: 40, height: 40, mr: 1 }}
+                    />
+                    <Box>
+                      <Typography variant="subtitle1">{player.name}</Typography>
+                      {player.basketballStats && (
+                        <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5 }}>
+                          <Typography variant="caption" color="primary">
+                            {player.basketballStats.pointsAverage} PPG
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            •
+                          </Typography>
+                          <Typography variant="caption" color="secondary">
+                            {player.basketballStats.fieldGoalPercentage}% FG
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
                   <Typography variant="body2" color="text.secondary">
                     Band: {bands.find(band => band.id === player.band)?.name || 'Unknown'}

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import AuctionSetup from './pages/AuctionSetup';
 import Auction from './pages/Auction';
 import Players from './pages/Players';
+import GameStatsPage from './pages/GameStats';
 import DataManagement from './pages/DataManagement';
 import { setupStorageSync, loadStorageFromBackup } from './utils/storage';
 
@@ -50,6 +51,9 @@ function App() {
             <Button color="inherit" component={Link} to="/players">
               Players
             </Button>
+            <Button color="inherit" component={Link} to="/game-stats">
+              Game Stats
+            </Button>
             <Button color="inherit" component={Link} to="/data">
               Data Management
             </Button>
@@ -61,6 +65,7 @@ function App() {
             <Route path="/auction/:id" element={<Auction />} />
             <Route path="/auction/:id/setup" element={<AuctionSetup />} />
             <Route path="/players" element={<Players />} />
+            <Route path="/game-stats" element={<GameStatsPage />} />
             <Route path="/data" element={<DataManagement />} />
           </Routes>
         </Container>
