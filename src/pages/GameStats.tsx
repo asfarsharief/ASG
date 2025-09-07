@@ -1038,8 +1038,9 @@ const GameStatsPage = () => {
                   {Array.isArray(players) ? players
                     .filter(player => {
                       if (editingPlayerId) return player.id === newPlayerStats.playerId;
-                      const teamPlayers = currentTeamType === 'home' ? homeTeamPlayers : awayTeamPlayers;
-                      return !teamPlayers.includes(player.id);
+                      // Filter out players who are already in either team for this game
+                      const allSelectedPlayers = [...homeTeamPlayers, ...awayTeamPlayers];
+                      return !allSelectedPlayers.includes(player.id);
                     })
                     .map((player) => (
                       <MenuItem key={player.id} value={player.id}>

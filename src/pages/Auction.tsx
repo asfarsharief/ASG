@@ -1065,8 +1065,8 @@ const Auction = () => {
                   <>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                       <Avatar
-                        src={currentPlayer.photoUrl}
-                        alt={currentPlayer.name}
+                        src={isNameVisible ? currentPlayer.photoUrl : undefined}
+                        alt={isNameVisible ? currentPlayer.name : 'Hidden Player'}
                         sx={{ width: 56, height: 56, mr: 2 }}
                       />
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}>

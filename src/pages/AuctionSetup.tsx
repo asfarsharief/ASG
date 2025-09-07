@@ -73,6 +73,15 @@ const AuctionSetup = () => {
   const getAvailablePlayersForTeam = () => {
     const existingCaptains = new Set(teams.map(team => team.captain));
     const existingViceCaptains = new Set(teams.map(team => team.viceCaptain).filter(Boolean));
+    
+    // When editing, allow the current team's captain and vice captain to be selected
+    if (isEditingTeam && selectedTeam) {
+      return availablePlayers.filter(player => 
+        !existingCaptains.has(player.name) || player.name === selectedTeam.captain ||
+        !existingViceCaptains.has(player.name) || player.name === selectedTeam.viceCaptain
+      );
+    }
+    
     return availablePlayers.filter(player => 
       !existingCaptains.has(player.name) && !existingViceCaptains.has(player.name)
     );
@@ -82,9 +91,14 @@ const AuctionSetup = () => {
   const getAvailablePlayersForBand = () => {
     const existingCaptains = new Set(teams.map(team => team.captain));
     const existingViceCaptains = new Set(teams.map(team => team.viceCaptain).filter(Boolean));
+    
+    // Get players already in bands
+    const playersInBands = new Set(bands.flatMap(band => band.players.map(p => p.id)));
+    
     return availablePlayers.filter(player => 
       !existingCaptains.has(player.name) && 
-      !existingViceCaptains.has(player.name)
+      !existingViceCaptains.has(player.name) &&
+      !playersInBands.has(player.id)
     );
   };
 
@@ -106,12 +120,12 @@ const AuctionSetup = () => {
     localforage.getItem('players').then((storedPlayers) => {
       if (storedPlayers && typeof storedPlayers === 'string') {
         const allPlayers = JSON.parse(storedPlayers);
-        // Filter out players that are already in bands
-        const usedPlayerIds = new Set(bands.flatMap(band => band.players.map(p => p.id)));
-        setAvailablePlayers(allPlayers.filter((player: Player) => !usedPlayerIds.has(player.id)));
+        setAvailablePlayers(allPlayers);
+      } else if (Array.isArray(storedPlayers)) {
+        setAvailablePlayers(storedPlayers);
       }
     });
-  }, [id, bands]);
+  }, [id]);
 
   const handleEditTeam = (team: Team) => {
     setSelectedTeam(team);
@@ -896,16 +910,11 @@ const AuctionSetup = () => {
                 <InputLabel>Add Players</InputLabel>
                 <Select
                   multiple
-                  value={[]}
+                  value={selectedPlayerIds}
                   label="Add Players"
                   onChange={(e) => {
-                    const selectedPlayerIds = e.target.value as string[];
-                    selectedPlayerIds.forEach(playerId => {
-                      const player = availablePlayers.find(p => p.id === playerId);
-                      if (player) {
-                        handleAddPlayersToBand();
-                      }
-                    });
+                    const selectedIds = e.target.value as string[];
+                    setSelectedPlayerIds(selectedIds);
                   }}
                   renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -919,12 +928,12 @@ const AuctionSetup = () => {
                     </Box>
                   )}
                 >
-                  {availablePlayers
+                  {getAvailablePlayersForBand()
                     .filter(player => !newBand.players.some(p => p.id === player.id))
                     .map((player) => (
                       <MenuItem key={player.id} value={player.id}>
                         <Checkbox 
-                          checked={newBand.players.some(p => p.id === player.id)}
+                          checked={selectedPlayerIds.includes(player.id)}
                         />
                         <ListItemText primary={player.name} />
                       </MenuItem>
