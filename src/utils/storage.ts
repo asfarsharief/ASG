@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import { fetchPlayers, fetchAuctions, fetchGames, checkBackendHealth } from '../services/api';
 
 // Function to export all local storage data to a JSON file
 export const exportStorageToJson = async () => {
@@ -82,5 +83,71 @@ export const loadStorageFromBackup = async () => {
     }
   } catch (error) {
     console.error('Error loading from backup:', error);
+  }
+};
+
+// Function to sync data from backend API
+export const syncDataFromBackend = async () => {
+  try {
+    console.log('Checking backend availability...');
+    const isBackendAvailable = await checkBackendHealth();
+    
+    if (!isBackendAvailable) {
+      console.log('Backend not available, skipping sync');
+      return false;
+    }
+
+    console.log('Backend available, syncing data...');
+    
+    // Fetch data from backend
+    const [players, auctions, games] = await Promise.all([
+      fetchPlayers(),
+      fetchAuctions(),
+      fetchGames()
+    ]);
+
+    // Update localforage with backend data
+    await localforage.setItem('players', players);
+    await localforage.setItem('auctions', auctions);
+    await localforage.setItem('games', games);
+
+    console.log('Successfully synced data from backend:', {
+      players: players.length,
+      auctions: auctions.length,
+      games: games.length
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error syncing data from backend:', error);
+    return false;
+  }
+};
+
+// Function to sync only players from backend (for specific use case)
+export const syncPlayersFromBackend = async () => {
+  try {
+    console.log('Checking backend availability for players sync...');
+    const isBackendAvailable = await checkBackendHealth();
+    
+    if (!isBackendAvailable) {
+      console.log('Backend not available, skipping players sync');
+      return false;
+    }
+
+    console.log('Backend available, syncing players...');
+    
+    // Fetch players from backend
+    const players = await fetchPlayers();
+
+    // Update localforage with backend players data
+    await localforage.setItem('players', players);
+
+    console.log('Successfully synced players from backend:', players.length);
+
+    return true;
+  } catch (error) {
+    console.error('Error syncing players from backend:', error);
+    return false;
   }
 }; 

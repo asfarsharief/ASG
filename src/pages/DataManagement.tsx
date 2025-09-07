@@ -7,7 +7,7 @@ import {
   Paper,
   Alert,
 } from '@mui/material';
-import { exportStorageToJson, importStorageFromJson } from '../utils/storage';
+import { exportStorageToJson, importStorageFromJson, syncDataFromBackend } from '../utils/storage';
 
 const DataManagement = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +34,20 @@ const DataManagement = () => {
     }
   };
 
+  const handleSyncFromBackend = async () => {
+    try {
+      setMessage({ type: 'success', text: 'Syncing data from backend...' });
+      const success = await syncDataFromBackend();
+      if (success) {
+        setMessage({ type: 'success', text: 'Data synced successfully from backend! Please refresh the page.' });
+      } else {
+        setMessage({ type: 'error', text: 'Backend not available or sync failed. Please check if the backend is running.' });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Error syncing from backend. Please check if the backend is running.' });
+    }
+  };
+
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom>
@@ -56,7 +70,7 @@ const DataManagement = () => {
         </Button>
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" gutterBottom>
           Import Data
         </Typography>
@@ -76,6 +90,22 @@ const DataManagement = () => {
           onClick={() => fileInputRef.current?.click()}
         >
           Import Data
+        </Button>
+      </Paper>
+
+      <Paper sx={{ p: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Sync from Backend
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Sync data from the backend server. This will fetch the latest players, auctions, and games data from the backend and update your local storage.
+        </Typography>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleSyncFromBackend}
+        >
+          Sync from Backend
         </Button>
       </Paper>
 

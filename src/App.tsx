@@ -8,7 +8,7 @@ import Auction from './pages/Auction';
 import Players from './pages/Players';
 import GameStatsPage from './pages/GameStats';
 import DataManagement from './pages/DataManagement';
-import { setupStorageSync, loadStorageFromBackup } from './utils/storage';
+import { setupStorageSync, loadStorageFromBackup, syncDataFromBackend } from './utils/storage';
 
 const theme = createTheme({
   palette: {
@@ -24,8 +24,25 @@ const theme = createTheme({
 
 function App() {
   useEffect(() => {
-    // Load data from backup on startup
-    loadStorageFromBackup();
+    const initializeApp = async () => {
+      try {
+        // First, try to sync data from backend
+        console.log('Initializing app - attempting backend sync...');
+        const backendSyncSuccess = await syncDataFromBackend();
+        
+        if (!backendSyncSuccess) {
+          // If backend sync fails, load from backup
+          console.log('Backend sync failed, loading from backup...');
+          await loadStorageFromBackup();
+        }
+      } catch (error) {
+        console.error('Error during app initialization:', error);
+        // Fallback to backup loading
+        await loadStorageFromBackup();
+      }
+    };
+
+    initializeApp();
     
     // Setup storage sync
     const observer = setupStorageSync();
