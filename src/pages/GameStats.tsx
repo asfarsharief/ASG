@@ -32,6 +32,7 @@ import {
 import { Add, Edit, Delete, SportsBasketball, ExpandMore } from '@mui/icons-material';
 import localForage from 'localforage';
 import { Game, Player, PlayerGameStats } from '../types';
+import { formatDate } from '../utils/dateUtils';
 
 const GameStatsPage = () => {
   const [games, setGames] = useState<Game[]>([]);
@@ -565,7 +566,7 @@ const GameStatsPage = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
                   <Typography variant="h6">{game.gameName}</Typography>
                   <Chip 
-                    label={new Date(game.gameDate).toLocaleDateString()} 
+                    label={formatDate(game.gameDate)} 
                     size="small" 
                     variant="outlined" 
                   />

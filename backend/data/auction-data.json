@@ -1,0 +1,2501 @@
+{
+  "auctions": [
+    {
+      "id": "1741370279500",
+      "name": "ASG-5",
+      "status": "completed",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1741370787807,
+      "teams": [
+        {
+          "id": "1741370745979",
+          "name": "Team Jerin",
+          "captain": "Jerin",
+          "budget": 200,
+          "remainingBudget": 14,
+          "players": [
+            {
+              "id": "1741370444122",
+              "name": "Jayant",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 40,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 18,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 7,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 45,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 5,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 24,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370544945",
+              "name": "Shiva",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 25,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370436742",
+              "name": "Gautam",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 22,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            }
+          ]
+        },
+        {
+          "id": "1741370760650",
+          "name": "Team Vid",
+          "captain": "Vidyuth",
+          "budget": 200,
+          "remainingBudget": 17,
+          "players": [
+            {
+              "id": "1741369527075",
+              "name": "Mahak",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 32,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370536094",
+              "name": "Rakesh",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 12,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370566860",
+              "name": "Deb",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 7,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369563727",
+              "name": "Rajesh",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 32,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 50,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 13,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370577031",
+              "name": "Vikas",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 32,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 5,
+              "soldInRound": 2,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            }
+          ]
+        }
+      ],
+      "bands": [
+        {
+          "id": 1741370787807,
+          "name": "Base",
+          "basePrice": 5,
+          "players": [
+            {
+              "id": "1741369527075",
+              "name": "Mahak",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 32,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369563727",
+              "name": "Rajesh",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 32,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 50,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 13,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 7,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 24,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 45,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 5,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370436742",
+              "name": "Gautam",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 22,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370444122",
+              "name": "Jayant",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 40,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 18,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370536094",
+              "name": "Rakesh",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 12,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370544945",
+              "name": "Shiva",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Jerin",
+              "soldPrice": 25,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370566860",
+              "name": "Deb",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 7,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370577031",
+              "name": "Vikas",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 32,
+              "soldInRound": 1,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1741370787807,
+              "status": "sold",
+              "soldTo": "Team Vid",
+              "soldPrice": 5,
+              "soldInRound": 2,
+              "soldFromBand": 1741370787807,
+              "soldFromBandName": "Base",
+              "soldFromBandBasePrice": 5
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1741370787807,
+              "status": "available"
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1741370787807,
+              "status": "available"
+            },
+            {
+              "id": "1741370460748",
+              "name": "Nidish",
+              "band": 1741370787807,
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "createdAt": "2025-03-07T17:57:59.500Z",
+      "updatedAt": "2025-03-07T17:57:59.500Z",
+      "currentRound": 2,
+      "unsoldPlayers": {
+        "1741370787807": [
+          {
+            "id": "1741370399197",
+            "name": "Apoorv",
+            "band": 1741370787807,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370417094",
+            "name": "Chitranshu",
+            "band": 1741370787807,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370460748",
+            "name": "Nidish",
+            "band": 1741370787807,
+            "status": "available",
+            "skipped": true
+          }
+        ]
+      },
+      "randomizePlayersOrder": true
+    },
+    {
+      "id": "1741407938848",
+      "name": "ASG - 5 ",
+      "status": "in_progress",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1,
+      "teams": [
+        {
+          "id": "1741407954115",
+          "name": "Team Jerin",
+          "captain": "Jerin",
+          "budget": 200,
+          "remainingBudget": 200,
+          "players": []
+        },
+        {
+          "id": "1741407987514",
+          "name": "Team Vid",
+          "captain": "Vidyuth",
+          "budget": 200,
+          "remainingBudget": 200,
+          "players": []
+        }
+      ],
+      "bands": [
+        {
+          "id": 1741408035580,
+          "name": "Base",
+          "basePrice": 5,
+          "players": [
+            {
+              "id": "1741369527075",
+              "name": "Mahak",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741369563727",
+              "name": "Rajesh",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370436742",
+              "name": "Gautam",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370444122",
+              "name": "Jayant",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370460748",
+              "name": "Nidish",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370536094",
+              "name": "Rakesh",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370544945",
+              "name": "Shiva",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370566860",
+              "name": "Deb",
+              "band": 1741408035580,
+              "status": "available"
+            },
+            {
+              "id": "1741370577031",
+              "name": "Vikas",
+              "band": 1741408035580,
+              "status": "available"
+            }
+          ]
+        }
+      ],
+      "createdAt": "2025-03-08T04:25:38.848Z",
+      "updatedAt": "2025-03-08T04:25:38.848Z",
+      "currentRound": 1,
+      "unsoldPlayers": {},
+      "randomizePlayersOrder": true
+    },
+    {
+      "id": "1749181988556",
+      "name": "temp",
+      "status": "completed",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1749182042190,
+      "teams": [
+        {
+          "id": "1749182009425",
+          "name": "Team1",
+          "captain": "Mahak",
+          "budget": 180,
+          "remainingBudget": 127,
+          "players": [
+            {
+              "id": "1741369563727",
+              "name": "Rajesh",
+              "band": 1749182042190,
+              "status": "sold",
+              "soldTo": "Team1",
+              "soldPrice": 30,
+              "soldInRound": 6,
+              "soldFromBand": 1749182042190,
+              "soldFromBandName": "tier 1",
+              "soldFromBandBasePrice": 30
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1749182051942,
+              "status": "sold",
+              "soldTo": "Team1",
+              "soldPrice": 23,
+              "soldInRound": 6,
+              "soldFromBand": 1749182051942,
+              "soldFromBandName": "tier 2",
+              "soldFromBandBasePrice": 20
+            }
+          ]
+        },
+        {
+          "id": "1749182020394",
+          "name": "team2",
+          "captain": "Jerin",
+          "budget": 180,
+          "remainingBudget": 170,
+          "players": [
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1749182060190,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 10,
+              "soldInRound": 6,
+              "soldFromBand": 1749182060190,
+              "soldFromBandName": "tier 3",
+              "soldFromBandBasePrice": 10
+            }
+          ]
+        }
+      ],
+      "bands": [
+        {
+          "id": 1749182042190,
+          "name": "tier 1",
+          "basePrice": 30,
+          "players": [
+            {
+              "id": "1741369563727",
+              "name": "Rajesh",
+              "band": 1749182042190,
+              "status": "sold",
+              "soldTo": "Team1",
+              "soldPrice": 30,
+              "soldInRound": 6,
+              "soldFromBand": 1749182042190,
+              "soldFromBandName": "tier 1",
+              "soldFromBandBasePrice": 30
+            },
+            {
+              "id": "1741370349977",
+              "name": "Vidyuth",
+              "band": 1749182042190,
+              "status": "available"
+            },
+            {
+              "id": "1741369557867",
+              "name": "Vipin",
+              "band": 1749182042190,
+              "status": "available"
+            },
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1749182042190,
+              "status": "available"
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1749182042190,
+              "status": "available"
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1749182042190,
+              "status": "available"
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1749182042190,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1749182051942,
+          "name": "tier 2",
+          "basePrice": 20,
+          "players": [
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1749182051942,
+              "status": "sold",
+              "soldTo": "Team1",
+              "soldPrice": 23,
+              "soldInRound": 6,
+              "soldFromBand": 1749182051942,
+              "soldFromBandName": "tier 2",
+              "soldFromBandBasePrice": 20
+            },
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1749182051942,
+              "status": "available"
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1749182051942,
+              "status": "available"
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1749182051942,
+              "status": "available"
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1749182051942,
+              "status": "available"
+            },
+            {
+              "id": "1741370436742",
+              "name": "Gautam",
+              "band": 1749182051942,
+              "status": "available"
+            },
+            {
+              "id": "1741370444122",
+              "name": "Jayant",
+              "band": 1749182051942,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1749182060190,
+          "name": "tier 3",
+          "basePrice": 10,
+          "players": [
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1749182060190,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 10,
+              "soldInRound": 6,
+              "soldFromBand": 1749182060190,
+              "soldFromBandName": "tier 3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741370460748",
+              "name": "Nidish",
+              "band": 1749182060190,
+              "status": "available"
+            },
+            {
+              "id": "1749139683722",
+              "name": "Himanshu",
+              "band": 1749182060190,
+              "status": "available"
+            },
+            {
+              "id": "1749139662666",
+              "name": "Asfar",
+              "band": 1749182060190,
+              "status": "available"
+            },
+            {
+              "id": "1741370577031",
+              "name": "Vikas",
+              "band": 1749182060190,
+              "status": "available"
+            },
+            {
+              "id": "1741370536094",
+              "name": "Rakesh",
+              "band": 1749182060190,
+              "status": "available"
+            },
+            {
+              "id": "1741370544945",
+              "name": "Shiva",
+              "band": 1749182060190,
+              "status": "available"
+            },
+            {
+              "id": "1741370566860",
+              "name": "Deb",
+              "band": 1749182060190,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        }
+      ],
+      "createdAt": "2025-06-06T03:53:08.556Z",
+      "updatedAt": "2025-06-06T03:53:08.556Z",
+      "currentRound": 7,
+      "unsoldPlayers": {
+        "1749182042190": [
+          {
+            "id": "1741370349977",
+            "name": "Vidyuth",
+            "band": 1749182042190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369557867",
+            "name": "Vipin",
+            "band": 1749182042190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369572007",
+            "name": "Ishan",
+            "band": 1749182042190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369624380",
+            "name": "Clifford",
+            "band": 1749182042190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369579927",
+            "name": "Ashish",
+            "band": 1749182042190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369619504",
+            "name": "Rajiv",
+            "band": 1749182042190,
+            "status": "available",
+            "skipped": true
+          }
+        ],
+        "1749182051942": [
+          {
+            "id": "1741370399197",
+            "name": "Apoorv",
+            "band": 1749182051942,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370392991",
+            "name": "Anirudh",
+            "band": 1749182051942,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370436742",
+            "name": "Gautam",
+            "band": 1749182051942,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370444122",
+            "name": "Jayant",
+            "band": 1749182051942,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370378623",
+            "name": "Khushil",
+            "band": 1749182051942,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370386260",
+            "name": "Allen",
+            "band": 1749182051942,
+            "status": "available",
+            "skipped": true
+          }
+        ],
+        "1749182060190": [
+          {
+            "id": "1741370566860",
+            "name": "Deb",
+            "band": 1749182060190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1749139662666",
+            "name": "Asfar",
+            "band": 1749182060190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370577031",
+            "name": "Vikas",
+            "band": 1749182060190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370460748",
+            "name": "Nidish",
+            "band": 1749182060190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370536094",
+            "name": "Rakesh",
+            "band": 1749182060190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370544945",
+            "name": "Shiva",
+            "band": 1749182060190,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1749139683722",
+            "name": "Himanshu",
+            "band": 1749182060190,
+            "status": "available",
+            "skipped": true
+          }
+        ]
+      },
+      "randomizePlayersOrder": false,
+      "randomizeAllPlayers": true
+    },
+    {
+      "id": "1749183637970",
+      "name": "test",
+      "status": "setup",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1,
+      "teams": [],
+      "bands": [],
+      "createdAt": "2025-06-06T04:20:37.970Z",
+      "updatedAt": "2025-06-06T04:20:37.970Z",
+      "currentRound": 1,
+      "unsoldPlayers": {},
+      "randomizePlayersOrder": false
+    },
+    {
+      "id": "1749206338259",
+      "name": "team1",
+      "status": "completed",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1749206402537,
+      "teams": [
+        {
+          "id": "1749206347873",
+          "name": "Team2",
+          "captain": "Mahak",
+          "budget": 100,
+          "remainingBudget": 100,
+          "players": []
+        },
+        {
+          "id": "1749206358415",
+          "name": "Team1",
+          "captain": "Jerin",
+          "budget": 100,
+          "remainingBudget": 100,
+          "players": []
+        }
+      ],
+      "bands": [
+        {
+          "id": 1749206402537,
+          "name": "Tier 1",
+          "basePrice": 15,
+          "players": [
+            {
+              "id": "1741369557867",
+              "name": "Vipin",
+              "band": 1749206402537,
+              "status": "available"
+            },
+            {
+              "id": "1741369563727",
+              "name": "Rajesh",
+              "band": 1749206402537,
+              "status": "available"
+            },
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1749206402537,
+              "status": "available"
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1749206402537,
+              "status": "available"
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1749206402537,
+              "status": "available"
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1749206402537,
+              "status": "available"
+            },
+            {
+              "id": "1741370349977",
+              "name": "Vidyuth",
+              "band": 1749206402537,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1749206420250,
+          "name": "Tier 2",
+          "basePrice": 10,
+          "players": [
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1749206420250,
+              "status": "available"
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1749206420250,
+              "status": "available"
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1749206420250,
+              "status": "available"
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1749206420250,
+              "status": "available"
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1749206420250,
+              "status": "available"
+            },
+            {
+              "id": "1741370436742",
+              "name": "Gautam",
+              "band": 1749206420250,
+              "status": "available"
+            },
+            {
+              "id": "1741370444122",
+              "name": "Jayant",
+              "band": 1749206420250,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1749206440166,
+          "name": "Tier 3",
+          "basePrice": 5,
+          "players": [
+            {
+              "id": "1741370460748",
+              "name": "Nidish",
+              "band": 1749206440166,
+              "status": "available"
+            },
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1749206440166,
+              "status": "available"
+            },
+            {
+              "id": "1741370536094",
+              "name": "Rakesh",
+              "band": 1749206440166,
+              "status": "available"
+            },
+            {
+              "id": "1741370544945",
+              "name": "Shiva",
+              "band": 1749206440166,
+              "status": "available"
+            },
+            {
+              "id": "1741370566860",
+              "name": "Deb",
+              "band": 1749206440166,
+              "status": "available"
+            },
+            {
+              "id": "1741370577031",
+              "name": "Vikas",
+              "band": 1749206440166,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        }
+      ],
+      "createdAt": "2025-06-06T10:38:58.259Z",
+      "updatedAt": "2025-06-06T10:38:58.260Z",
+      "currentRound": 2,
+      "unsoldPlayers": {
+        "1749206402537": [
+          {
+            "id": "1741369619504",
+            "name": "Rajiv",
+            "band": 1749206402537,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369579927",
+            "name": "Ashish",
+            "band": 1749206402537,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369557867",
+            "name": "Vipin",
+            "band": 1749206402537,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369572007",
+            "name": "Ishan",
+            "band": 1749206402537,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370349977",
+            "name": "Vidyuth",
+            "band": 1749206402537,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369624380",
+            "name": "Clifford",
+            "band": 1749206402537,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369563727",
+            "name": "Rajesh",
+            "band": 1749206402537,
+            "status": "available",
+            "skipped": true
+          }
+        ],
+        "1749206420250": [
+          {
+            "id": "1741370399197",
+            "name": "Apoorv",
+            "band": 1749206420250,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370444122",
+            "name": "Jayant",
+            "band": 1749206420250,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370386260",
+            "name": "Allen",
+            "band": 1749206420250,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370392991",
+            "name": "Anirudh",
+            "band": 1749206420250,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370436742",
+            "name": "Gautam",
+            "band": 1749206420250,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370378623",
+            "name": "Khushil",
+            "band": 1749206420250,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370417094",
+            "name": "Chitranshu",
+            "band": 1749206420250,
+            "status": "available",
+            "skipped": true
+          }
+        ],
+        "1749206440166": [
+          {
+            "id": "1741370536094",
+            "name": "Rakesh",
+            "band": 1749206440166,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370544945",
+            "name": "Shiva",
+            "band": 1749206440166,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370526425",
+            "name": "Raghav",
+            "band": 1749206440166,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370566860",
+            "name": "Deb",
+            "band": 1749206440166,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370460748",
+            "name": "Nidish",
+            "band": 1749206440166,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370577031",
+            "name": "Vikas",
+            "band": 1749206440166,
+            "status": "available",
+            "skipped": true
+          }
+        ]
+      },
+      "randomizePlayersOrder": false,
+      "randomizeAllPlayers": true
+    },
+    {
+      "id": "1749219383145",
+      "name": "dfg",
+      "status": "completed",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1749219424604,
+      "teams": [
+        {
+          "id": "1749219396514",
+          "name": "team1",
+          "captain": "Mahak",
+          "budget": 180,
+          "remainingBudget": 25,
+          "players": [
+            {
+              "id": "1741370349977",
+              "name": "Vidyuth",
+              "band": 1749219424604,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 35,
+              "soldInRound": 3,
+              "soldFromBand": 1749219424604,
+              "soldFromBandName": "Band1",
+              "soldFromBandBasePrice": 30
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1749219441588,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 25,
+              "soldInRound": 3,
+              "soldFromBand": 1749219441588,
+              "soldFromBandName": "Band2",
+              "soldFromBandBasePrice": 20
+            },
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 25,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741369557867",
+              "name": "Vipin",
+              "band": 1749219424604,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 30,
+              "soldInRound": 3,
+              "soldFromBand": 1749219424604,
+              "soldFromBandName": "Band1",
+              "soldFromBandBasePrice": 30
+            },
+            {
+              "id": "1741370544945",
+              "name": "Shiva",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 10,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1749219424604,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 30,
+              "soldInRound": 3,
+              "soldFromBand": 1749219424604,
+              "soldFromBandName": "Band1",
+              "soldFromBandBasePrice": 30
+            }
+          ]
+        },
+        {
+          "id": "1749219406033",
+          "name": "team2",
+          "captain": "Jerin",
+          "budget": 180,
+          "remainingBudget": 105,
+          "players": [
+            {
+              "id": "1741370460748",
+              "name": "Nidish",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 30,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1749219441588,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 25,
+              "soldInRound": 3,
+              "soldFromBand": 1749219441588,
+              "soldFromBandName": "Band2",
+              "soldFromBandBasePrice": 20
+            },
+            {
+              "id": "1741370536094",
+              "name": "Rakesh",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 20,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            }
+          ]
+        }
+      ],
+      "bands": [
+        {
+          "id": 1749219424604,
+          "name": "Band1",
+          "basePrice": 30,
+          "players": [
+            {
+              "id": "1741369557867",
+              "name": "Vipin",
+              "band": 1749219424604,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 30,
+              "soldInRound": 3,
+              "soldFromBand": 1749219424604,
+              "soldFromBandName": "Band1",
+              "soldFromBandBasePrice": 30
+            },
+            {
+              "id": "1741369563727",
+              "name": "Rajesh",
+              "band": 1749219424604,
+              "status": "available"
+            },
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1749219424604,
+              "status": "available"
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1749219424604,
+              "status": "available"
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1749219424604,
+              "status": "available"
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1749219424604,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 30,
+              "soldInRound": 3,
+              "soldFromBand": 1749219424604,
+              "soldFromBandName": "Band1",
+              "soldFromBandBasePrice": 30
+            },
+            {
+              "id": "1741370349977",
+              "name": "Vidyuth",
+              "band": 1749219424604,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 35,
+              "soldInRound": 3,
+              "soldFromBand": 1749219424604,
+              "soldFromBandName": "Band1",
+              "soldFromBandBasePrice": 30
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1749219441588,
+          "name": "Band2",
+          "basePrice": 20,
+          "players": [
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1749219441588,
+              "status": "available"
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1749219441588,
+              "status": "available"
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1749219441588,
+              "status": "available"
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1749219441588,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 25,
+              "soldInRound": 3,
+              "soldFromBand": 1749219441588,
+              "soldFromBandName": "Band2",
+              "soldFromBandBasePrice": 20
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1749219441588,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 25,
+              "soldInRound": 3,
+              "soldFromBand": 1749219441588,
+              "soldFromBandName": "Band2",
+              "soldFromBandBasePrice": 20
+            },
+            {
+              "id": "1741370444122",
+              "name": "Jayant",
+              "band": 1749219441588,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1749219460165,
+          "name": "Band3",
+          "basePrice": 10,
+          "players": [
+            {
+              "id": "1741370436742",
+              "name": "Gautam",
+              "band": 1749219460165,
+              "status": "available"
+            },
+            {
+              "id": "1741370460748",
+              "name": "Nidish",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 30,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741370526425",
+              "name": "Raghav",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 25,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741370536094",
+              "name": "Rakesh",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team2",
+              "soldPrice": 20,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741370544945",
+              "name": "Shiva",
+              "band": 1749219460165,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 10,
+              "soldInRound": 3,
+              "soldFromBand": 1749219460165,
+              "soldFromBandName": "Band3",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741370566860",
+              "name": "Deb",
+              "band": 1749219460165,
+              "status": "available"
+            },
+            {
+              "id": "1741370577031",
+              "name": "Vikas",
+              "band": 1749219460165,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        }
+      ],
+      "createdAt": "2025-06-06T14:16:23.145Z",
+      "updatedAt": "2025-06-06T14:16:23.145Z",
+      "currentRound": 3,
+      "unsoldPlayers": {
+        "1749219460165": [
+          {
+            "id": "1741370436742",
+            "name": "Gautam",
+            "band": 1749219460165,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370566860",
+            "name": "Deb",
+            "band": 1749219460165,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370577031",
+            "name": "Vikas",
+            "band": 1749219460165,
+            "status": "available",
+            "skipped": true
+          }
+        ],
+        "1749219424604": [
+          {
+            "id": "1741369572007",
+            "name": "Ishan",
+            "band": 1749219424604,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369619504",
+            "name": "Rajiv",
+            "band": 1749219424604,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369563727",
+            "name": "Rajesh",
+            "band": 1749219424604,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369579927",
+            "name": "Ashish",
+            "band": 1749219424604,
+            "status": "available",
+            "skipped": true
+          }
+        ],
+        "1749219441588": [
+          {
+            "id": "1741370392991",
+            "name": "Anirudh",
+            "band": 1749219441588,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370386260",
+            "name": "Allen",
+            "band": 1749219441588,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370378623",
+            "name": "Khushil",
+            "band": 1749219441588,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370444122",
+            "name": "Jayant",
+            "band": 1749219441588,
+            "status": "available",
+            "skipped": true
+          }
+        ]
+      },
+      "randomizePlayersOrder": false,
+      "randomizeAllPlayers": true
+    },
+    {
+      "id": "1749272079239",
+      "name": "new acutoijn",
+      "status": "in_progress",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1,
+      "teams": [
+        {
+          "id": "1749272091616",
+          "name": "team1",
+          "captain": "Rajesh",
+          "budget": 100,
+          "remainingBudget": 75,
+          "players": [
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1749272137154,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 25,
+              "soldInRound": 1,
+              "soldFromBand": 1749272137154,
+              "soldFromBandName": "Tier 2",
+              "soldFromBandBasePrice": 10
+            }
+          ]
+        },
+        {
+          "id": "1749272100186",
+          "name": "team2",
+          "captain": "Mahak",
+          "budget": 100,
+          "remainingBudget": 100,
+          "players": []
+        }
+      ],
+      "bands": [
+        {
+          "id": 1749272121142,
+          "name": "tier 1",
+          "basePrice": 15,
+          "players": [
+            {
+              "id": "1741369532060",
+              "name": "Jerin",
+              "band": 1749272121142,
+              "status": "available"
+            },
+            {
+              "id": "1741369557867",
+              "name": "Vipin",
+              "band": 1749272121142,
+              "status": "available"
+            },
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1749272121142,
+              "status": "available"
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1749272121142,
+              "status": "available"
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1749272121142,
+              "status": "available"
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1749272121142,
+              "status": "available"
+            },
+            {
+              "id": "1741370349977",
+              "name": "Vidyuth",
+              "band": 1749272121142,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1749272137154,
+          "name": "Tier 2",
+          "basePrice": 10,
+          "players": [
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1749272137154,
+              "status": "available"
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1749272137154,
+              "status": "available"
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1749272137154,
+              "status": "available"
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1749272137154,
+              "status": "available"
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1749272137154,
+              "status": "sold",
+              "soldTo": "team1",
+              "soldPrice": 25,
+              "soldInRound": 1,
+              "soldFromBand": 1749272137154,
+              "soldFromBandName": "Tier 2",
+              "soldFromBandBasePrice": 10
+            },
+            {
+              "id": "1741370436742",
+              "name": "Gautam",
+              "band": 1749272137154,
+              "status": "available"
+            },
+            {
+              "id": "1741370444122",
+              "name": "Jayant",
+              "band": 1749272137154,
+              "status": "available"
+            },
+            {
+              "id": "1741370460748",
+              "name": "Nidish",
+              "band": 1749272137154,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        }
+      ],
+      "createdAt": "2025-06-07T04:54:39.239Z",
+      "updatedAt": "2025-06-07T04:54:39.239Z",
+      "currentRound": 1,
+      "unsoldPlayers": {
+        "1749272137154": [
+          {
+            "id": "1741370444122",
+            "name": "Jayant",
+            "band": 1749272137154,
+            "status": "available",
+            "skipped": true
+          }
+        ]
+      },
+      "randomizePlayersOrder": false,
+      "randomizeAllPlayers": true
+    },
+    {
+      "id": "1757183431785",
+      "name": "asg-101",
+      "status": "completed",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1757183671446,
+      "teams": [
+        {
+          "id": "1757183632082",
+          "name": "team1",
+          "captain": "Mahak",
+          "viceCaptain": "Jerin",
+          "budget": 100,
+          "remainingBudget": 100,
+          "players": []
+        },
+        {
+          "id": "1757183647453",
+          "name": "team2",
+          "captain": "Vipin",
+          "viceCaptain": "Rajesh",
+          "budget": 100,
+          "remainingBudget": 100,
+          "players": []
+        }
+      ],
+      "bands": [
+        {
+          "id": 1757183671446,
+          "name": "base1",
+          "basePrice": 10,
+          "players": [
+            {
+              "id": "1741369572007",
+              "name": "Ishan",
+              "band": 1757183671446,
+              "status": "available"
+            },
+            {
+              "id": "1741369579927",
+              "name": "Ashish",
+              "band": 1757183671446,
+              "status": "available"
+            },
+            {
+              "id": "1741369619504",
+              "name": "Rajiv",
+              "band": 1757183671446,
+              "status": "available"
+            },
+            {
+              "id": "1741369624380",
+              "name": "Clifford",
+              "band": 1757183671446,
+              "status": "available"
+            },
+            {
+              "id": "1741370349977",
+              "name": "Vidyuth",
+              "band": 1757183671446,
+              "status": "available"
+            },
+            {
+              "id": "1741370417094",
+              "name": "Chitranshu",
+              "band": 1757183671446,
+              "status": "available",
+              "skipped": true
+            }
+          ],
+          "randomizePlayersOrder": true
+        },
+        {
+          "id": 1757183686767,
+          "name": "base2",
+          "basePrice": 5,
+          "players": [
+            {
+              "id": "1741370378623",
+              "name": "Khushil",
+              "band": 1757183686767,
+              "status": "available"
+            },
+            {
+              "id": "1741370386260",
+              "name": "Allen",
+              "band": 1757183686767,
+              "status": "available"
+            },
+            {
+              "id": "1741370392991",
+              "name": "Anirudh",
+              "band": 1757183686767,
+              "status": "available"
+            },
+            {
+              "id": "1741370399197",
+              "name": "Apoorv",
+              "band": 1757183686767,
+              "status": "available"
+            }
+          ],
+          "randomizePlayersOrder": true
+        }
+      ],
+      "createdAt": "2025-09-06T18:30:31.785Z",
+      "updatedAt": "2025-09-06T18:30:31.785Z",
+      "currentRound": 3,
+      "unsoldPlayers": {
+        "1757183671446": [
+          {
+            "id": "1741369572007",
+            "name": "Ishan",
+            "band": 1757183671446,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369579927",
+            "name": "Ashish",
+            "band": 1757183671446,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369619504",
+            "name": "Rajiv",
+            "band": 1757183671446,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741369624380",
+            "name": "Clifford",
+            "band": 1757183671446,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370349977",
+            "name": "Vidyuth",
+            "band": 1757183671446,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370417094",
+            "name": "Chitranshu",
+            "band": 1757183671446,
+            "status": "available",
+            "skipped": true
+          }
+        ],
+        "1757183686767": [
+          {
+            "id": "1741370378623",
+            "name": "Khushil",
+            "band": 1757183686767,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370386260",
+            "name": "Allen",
+            "band": 1757183686767,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370392991",
+            "name": "Anirudh",
+            "band": 1757183686767,
+            "status": "available",
+            "skipped": true
+          },
+          {
+            "id": "1741370399197",
+            "name": "Apoorv",
+            "band": 1757183686767,
+            "status": "available",
+            "skipped": true
+          }
+        ]
+      },
+      "randomizePlayersOrder": false,
+      "randomizeAllPlayers": true
+    },
+    {
+      "id": "1757184409421",
+      "name": "tmp",
+      "status": "completed",
+      "currentTeamId": "",
+      "currentPlayerId": null,
+      "currentBand": 1,
+      "teams": [
+        {
+          "id": "1757184420407",
+          "name": "t1",
+          "captain": "Rajesh",
+          "budget": 100,
+          "remainingBudget": 100,
+          "players": []
+        },
+        {
+          "id": "1757184430682",
+          "name": "t2",
+          "captain": "Ishan",
+          "budget": 100,
+          "remainingBudget": 100,
+          "players": []
+        }
+      ],
+      "bands": [
+        {
+          "id": 1757184447659,
+          "name": "b1",
+          "basePrice": 10,
+          "players": [
+            {
+              "id": "1741369527075",
+              "name": "Mahak",
+              "band": 1757184447659,
+              "status": "available",
+              "basketballStats": {
+                "winPercentage": 0,
+                "pointsAverage": 5,
+                "fieldGoalPercentage": 0,
+                "threePointPercentage": 0,
+                "freeThrowPercentage": 0,
+                "reboundsAverage": 0,
+                "assistsAverage": 0,
+                "stealsAverage": 0,
+                "blocksAverage": 0,
+                "turnoversAverage": 0,
+                "gamesPlayed": 1,
+                "minutesPerGame": 0
+              },
+              "photoUrl": "https: //drive.google.com/file/d/1THOo1h0GjEy-lNdGZK7-Ra6UWnJFrmoZ/view?usp=drive_link"
+            },
+            {
+              "id": "1741369532060",
+              "name": "Jerin",
+              "band": 1757184447659,
+              "status": "available",
+              "basketballStats": {
+                "winPercentage": 100,
+                "pointsAverage": 5,
+                "fieldGoalPercentage": 0,
+                "threePointPercentage": 0,
+                "freeThrowPercentage": 0,
+                "reboundsAverage": 0,
+                "assistsAverage": 0,
+                "stealsAverage": 0,
+                "blocksAverage": 0,
+                "turnoversAverage": 0,
+                "gamesPlayed": 1,
+                "minutesPerGame": 0
+              }
+            }
+          ],
+          "randomizePlayersOrder": true
+        }
+      ],
+      "createdAt": "2025-09-06T18:46:49.421Z",
+      "updatedAt": "2025-09-06T18:46:49.421Z",
+      "currentRound": 1,
+      "unsoldPlayers": {
+        "1757184447659": [
+          {
+            "id": "1741369532060",
+            "name": "Jerin",
+            "band": 1757184447659,
+            "status": "available",
+            "basketballStats": {
+              "winPercentage": 100,
+              "pointsAverage": 5,
+              "fieldGoalPercentage": 0,
+              "threePointPercentage": 0,
+              "freeThrowPercentage": 0,
+              "reboundsAverage": 0,
+              "assistsAverage": 0,
+              "stealsAverage": 0,
+              "blocksAverage": 0,
+              "turnoversAverage": 0,
+              "gamesPlayed": 1,
+              "minutesPerGame": 0
+            },
+            "skipped": true
+          },
+          {
+            "id": "1741369527075",
+            "name": "Mahak",
+            "band": 1757184447659,
+            "status": "available",
+            "basketballStats": {
+              "winPercentage": 0,
+              "pointsAverage": 5,
+              "fieldGoalPercentage": 0,
+              "threePointPercentage": 0,
+              "freeThrowPercentage": 0,
+              "reboundsAverage": 0,
+              "assistsAverage": 0,
+              "stealsAverage": 0,
+              "blocksAverage": 0,
+              "turnoversAverage": 0,
+              "gamesPlayed": 1,
+              "minutesPerGame": 0
+            },
+            "photoUrl": "https://drive.google.com/file/d/1THOo1h0GjEy-lNdGZK7-Ra6UWnJFrmoZ/view?usp=drive_link",
+            "skipped": true
+          }
+        ]
+      },
+      "randomizePlayersOrder": false,
+      "randomizeAllPlayers": true
+    }
+  ],
+  "games": [
+    {
+      "id": "1757183344199",
+      "gameName": "game 1",
+      "gameDate": "2025-09-06",
+      "homeTeamId": "",
+      "homeTeamName": "team1",
+      "awayTeamId": "",
+      "awayTeamName": "team2",
+      "homeScore": 5,
+      "awayScore": 5,
+      "gameResult": "away_win",
+      "playerStats": [
+        {
+          "id": "17571833052530.4781043496121571",
+          "playerId": "1741369527075",
+          "playerName": "Mahak",
+          "teamId": "",
+          "teamName": "team1",
+          "gameId": "",
+          "minutesPlayed": 0,
+          "points": 5,
+          "fieldGoalsMade": 0,
+          "fieldGoalsAttempted": 0,
+          "threePointersMade": 0,
+          "threePointersAttempted": 0,
+          "freeThrowsMade": 0,
+          "freeThrowsAttempted": 0,
+          "rebounds": 0,
+          "assists": 0,
+          "steals": 0,
+          "blocks": 0,
+          "turnovers": 0,
+          "personalFouls": 0,
+          "plusMinus": 0
+        },
+        {
+          "id": "17571833167470.5993197799521397",
+          "playerId": "1741369532060",
+          "playerName": "Jerin",
+          "teamId": "",
+          "teamName": "team2",
+          "gameId": "",
+          "minutesPlayed": 0,
+          "points": 5,
+          "fieldGoalsMade": 0,
+          "fieldGoalsAttempted": 0,
+          "threePointersMade": 0,
+          "threePointersAttempted": 0,
+          "freeThrowsMade": 0,
+          "freeThrowsAttempted": 0,
+          "rebounds": 0,
+          "assists": 0,
+          "steals": 0,
+          "blocks": 0,
+          "turnovers": 0,
+          "personalFouls": 0,
+          "plusMinus": 0
+        }
+      ]
+    }
+  ],
+  "players": [
+    {
+      "id": "1741369527075",
+      "name": "Mahak",
+      
+      "status": "available",
+      "basketballStats": {
+        "winPercentage": 0,
+        "pointsAverage": 5,
+        "fieldGoalPercentage": 0,
+        "threePointPercentage": 0,
+        "freeThrowPercentage": 0,
+        "reboundsAverage": 0,
+        "assistsAverage": 0,
+        "stealsAverage": 0,
+        "blocksAverage": 0,
+        "turnoversAverage": 0,
+        "gamesPlayed": 1,
+        "minutesPerGame": 0
+      },
+      "photoUrl": "https://drive.google.com/uc?export=view&id=1THOo1h0GjEy-lNdGZK7-Ra6UWnJFrmoZ"
+    },
+    {
+      "id": "1741369532060",
+      "name": "Jerin",
+      
+      "status": "available",
+      "basketballStats": {
+        "winPercentage": 100,
+        "pointsAverage": 5,
+        "fieldGoalPercentage": 0,
+        "threePointPercentage": 0,
+        "freeThrowPercentage": 0,
+        "reboundsAverage": 0,
+        "assistsAverage": 0,
+        "stealsAverage": 0,
+        "blocksAverage": 0,
+        "turnoversAverage": 0,
+        "gamesPlayed": 1,
+        "minutesPerGame": 0
+      }
+    },
+    {
+      "id": "1741369557867",
+      "name": "Vipin",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741369563727",
+      "name": "Rajesh",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741369572007",
+      "name": "Ishan",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741369579927",
+      "name": "Ashish",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741369619504",
+      "name": "Rajiv",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741369624380",
+      "name": "Clifford",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370349977",
+      "name": "Vidyuth",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370378623",
+      "name": "Khushil",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370386260",
+      "name": "Allen",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370392991",
+      "name": "Anirudh",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370399197",
+      "name": "Apoorv",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370417094",
+      "name": "Chitranshu",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370436742",
+      "name": "Gautam",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370444122",
+      "name": "Jayant",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370460748",
+      "name": "Nidish",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370526425",
+      "name": "Raghav",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370536094",
+      "name": "Rakesh",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370544945",
+      "name": "Shiva",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370566860",
+      "name": "Deb",
+      
+      "status": "available"
+    },
+    {
+      "id": "1741370577031",
+      "name": "Vikas",
+      
+      "status": "available"
+    },
+    {
+      "id": "1749139662666",
+      "name": "Asfar",
+      
+      "status": "available"
+    },
+    {
+      "id": "1749139683722",
+      "name": "Himanshu",
+      
+      "status": "available"
+    }
+  ]
+}

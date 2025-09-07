@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 import { AuctionState } from '../types';
 import localforage from 'localforage';
+import { formatDate } from '../utils/dateUtils';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -32,8 +33,11 @@ const Home = () => {
 
   useEffect(() => {
     // Load auctions from localForage
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
+    localforage.getItem<AuctionState[]>('auctions').then((storedAuctions) => {
+      if (Array.isArray(storedAuctions)) {
+        setAuctions(storedAuctions);
+      } else if (storedAuctions && typeof storedAuctions === 'string') {
+        // Handle legacy JSON string format
         setAuctions(JSON.parse(storedAuctions));
       }
     });
@@ -60,7 +64,7 @@ const Home = () => {
 
     const updatedAuctions = [...auctions, auction];
     setAuctions(updatedAuctions);
-    localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+    localforage.setItem('auctions', updatedAuctions);
     setOpenAuctionDialog(false);
     setNewAuction({ name: '' });
     
@@ -81,7 +85,7 @@ const Home = () => {
     if (window.confirm('Are you sure you want to delete this auction? This action cannot be undone.')) {
       const updatedAuctions = auctions.filter(a => a.id !== auctionId);
       setAuctions(updatedAuctions);
-      localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+      localforage.setItem('auctions', updatedAuctions);
     }
   };
 
@@ -154,7 +158,7 @@ const Home = () => {
                         secondary={
                           <>
                             <Typography component="span" variant="body2">
-                              Created: {new Date(auction.createdAt).toLocaleDateString()}
+                              Created: {formatDate(auction.createdAt)}
                             </Typography>
                             <br />
                             <Typography component="span" variant="body2">
