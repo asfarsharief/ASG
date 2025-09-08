@@ -1,4 +1,4 @@
-FROM golang:1.21
+FROM golang:1.23
 COPY /backend /src
 WORKDIR /src
 RUN  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a --installsuffix cgo -o bin/app main.go
