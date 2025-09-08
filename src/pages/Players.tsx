@@ -15,7 +15,6 @@ import {
   ListItem,
   Divider,
   IconButton,
-  Avatar,
   Grid,
   Accordion,
   AccordionSummary,
@@ -25,6 +24,9 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Player } from '../types';
 import localforage from 'localforage';
+import PlayerImage from '../components/PlayerImage';
+import { createPlayer } from '../services/api';
+import { syncPlayersFromBackend } from '../utils/storage';
 
 const Players = () => {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -68,18 +70,30 @@ const Players = () => {
   });
 
   useEffect(() => {
-    // Load players from localForage
-    localforage.getItem<Player[]>('players').then((storedPlayers) => {
-      if (Array.isArray(storedPlayers)) {
-        setPlayers(storedPlayers);
-      } else if (storedPlayers && typeof storedPlayers === 'string') {
-        // Handle legacy JSON string format
-        setPlayers(JSON.parse(storedPlayers));
+    const loadPlayers = async () => {
+      try {
+        // First try to sync from backend
+        await syncPlayersFromBackend();
+        console.log('Successfully synced players from backend');
+      } catch (error) {
+        console.log('Backend sync failed, using local data:', error);
       }
-    });
+      
+      // Load players from localForage (either synced or existing)
+      localforage.getItem<Player[]>('players').then((storedPlayers) => {
+        if (Array.isArray(storedPlayers)) {
+          setPlayers(storedPlayers);
+        } else if (storedPlayers && typeof storedPlayers === 'string') {
+          // Handle legacy JSON string format
+          setPlayers(JSON.parse(storedPlayers));
+        }
+      });
+    };
+
+    loadPlayers();
   }, []);
 
-  const handleAddPlayer = () => {
+  const handleAddPlayer = async () => {
     if (!newPlayer.name) return;
 
     if (isEditing && selectedPlayer) {
@@ -107,9 +121,37 @@ const Players = () => {
         basketballStats: newPlayer.basketballStats,
       };
 
+      // Add to localforage first
       const updatedPlayers = [...players, player];
       setPlayers(updatedPlayers);
       localforage.setItem('players', updatedPlayers);
+
+      // Then call API to save to backend
+      try {
+        const apiPlayer = {
+          id: player.id,
+          name: player.name,
+          band: player.band,
+          status: player.status,
+          basketballStats: player.basketballStats,
+          photoUrl: player.photoUrl,
+        };
+        
+        const result = await createPlayer(apiPlayer);
+        console.log('Player saved to backend:', result);
+        
+        // Update local player with the response from backend (in case image was downloaded)
+        const updatedPlayer = { ...player, photoUrl: result.player.photoUrl };
+        setPlayers(prevPlayers => {
+          const finalUpdatedPlayers = prevPlayers.map(p => p.id === player.id ? updatedPlayer : p);
+          localforage.setItem('players', finalUpdatedPlayers);
+          return finalUpdatedPlayers;
+        });
+        
+      } catch (error) {
+        console.error('Failed to save player to backend:', error);
+        // Player is still saved locally, so we continue
+      }
     }
 
     handleCloseDialog();
@@ -237,10 +279,12 @@ const Players = () => {
                   }
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                    <Avatar
-                      src={player.photoUrl}
-                      alt={player.name}
-                      sx={{ width: 56, height: 56, mr: 2 }}
+                    <PlayerImage
+                      playerId={player.id}
+                      playerName={player.name}
+                      size={56}
+                      variant="circular"
+                      className="player-avatar"
                     />
                     <Box sx={{ flexGrow: 1 }}>
                       <Typography variant="h6" component="div">

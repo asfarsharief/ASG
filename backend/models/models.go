@@ -18,7 +18,6 @@ type BasketballStats struct {
 type Player struct {
 	ID              string           `json:"id"`
 	Name            string           `json:"name"`
-	Band            int64            `json:"band"`
 	Status          string           `json:"status"`
 	BasketballStats *BasketballStats `json:"basketballStats,omitempty"`
 	PhotoUrl        string           `json:"photoUrl,omitempty"`

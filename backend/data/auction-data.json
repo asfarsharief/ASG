@@ -2327,7 +2327,6 @@
     {
       "id": "1741369527075",
       "name": "Mahak",
-      
       "status": "available",
       "basketballStats": {
         "winPercentage": 0,
@@ -2348,7 +2347,7 @@
     {
       "id": "1741369532060",
       "name": "Jerin",
-      
+      "photoUrl": "https://drive.google.com/uc?export=view&id=1THOo1h0GjEy-lNdGZK7-Ra6UWnJFrmoZ",
       "status": "available",
       "basketballStats": {
         "winPercentage": 100,

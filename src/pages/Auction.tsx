@@ -13,7 +13,6 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  Avatar,
   Select,
   MenuItem,
   FormControl,
@@ -26,6 +25,7 @@ import {
 import * as XLSX from 'xlsx';
 import { Team, Player, AuctionState, AuctionBand } from '../types';
 import localforage from 'localforage';
+import PlayerImage from '../components/PlayerImage';
 
 // Helper function to update auctions in localForage
 const updateAuctionsInStorage = async (id: string, updatedAuction: AuctionState) => {
@@ -1013,10 +1013,11 @@ const Auction = () => {
               <Card key={player.id} sx={{ minWidth: 200 }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <Avatar
-                      src={player.photoUrl}
-                      alt={player.name}
-                      sx={{ width: 40, height: 40, mr: 1 }}
+                    <PlayerImage
+                      playerId={player.id}
+                      playerName={player.name}
+                      size={40}
+                      variant="circular"
                     />
                     <Box>
                       <Typography variant="subtitle1">{player.name}</Typography>
@@ -1105,10 +1106,11 @@ const Auction = () => {
                 {currentPlayer ? (
                   <>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar
-                        src={isNameVisible ? currentPlayer.photoUrl : undefined}
-                        alt={isNameVisible ? currentPlayer.name : 'Hidden Player'}
-                        sx={{ width: 56, height: 56, mr: 2 }}
+                      <PlayerImage
+                        playerId={currentPlayer.id}
+                        playerName={currentPlayer.name}
+                        size={56}
+                        variant="circular"
                       />
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}>
                         <Typography variant="h6">
@@ -1339,10 +1341,11 @@ const Auction = () => {
               <Card key={player.id} sx={{ minWidth: 200 }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <Avatar
-                      src={player.photoUrl}
-                      alt={player.name}
-                      sx={{ width: 40, height: 40, mr: 1 }}
+                    <PlayerImage
+                      playerId={player.id}
+                      playerName={player.name}
+                      size={40}
+                      variant="circular"
                     />
                     <Box>
                       <Typography variant="subtitle1">{player.name}</Typography>
