@@ -24,6 +24,42 @@ export interface ApiPlayer {
   photoUrl?: string;
 }
 
+export interface ApiPlayerGameStats {
+  id: string;
+  playerId: string;
+  playerName: string;
+  teamId: string;
+  teamName: string;
+  gameId: string;
+  minutesPlayed: number;
+  points: number;
+  fieldGoalsMade: number;
+  fieldGoalsAttempted: number;
+  threePointersMade: number;
+  threePointersAttempted: number;
+  freeThrowsMade: number;
+  freeThrowsAttempted: number;
+  rebounds: number;
+  assists: number;
+  steals: number;
+  blocks: number;
+  turnovers: number;
+  personalFouls: number;
+  plusMinus: number;
+}
+
+export interface ApiGame {
+  id: string;
+  gameName: string;
+  gameDate: string;
+  homeTeamName: string;
+  awayTeamName: string;
+  homeScore: number;
+  awayScore: number;
+  gameResult: string;
+  playerStats: ApiPlayerGameStats[];
+}
+
 export interface ApiAuction {
   id: string;
   name: string;
@@ -39,18 +75,6 @@ export interface ApiAuction {
   unsoldPlayers: { [key: number]: any[] };
   randomizePlayersOrder: boolean;
   randomizeAllPlayers: boolean;
-}
-
-export interface ApiGame {
-  id: string;
-  gameName: string;
-  gameDate: string;
-  homeTeamName: string;
-  awayTeamName: string;
-  homeScore: number;
-  awayScore: number;
-  gameResult: string;
-  playerStats: any[];
 }
 
 /**
@@ -185,7 +209,7 @@ export const checkBackendHealth = async (): Promise<boolean> => {
 export const createPlayer = async (player: ApiPlayer): Promise<{ message: string; player: ApiPlayer }> => {
   try {
     const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.PLAYERS), {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -202,6 +226,139 @@ export const createPlayer = async (player: ApiPlayer): Promise<{ message: string
     return result;
   } catch (error) {
     console.error('Error creating player:', error);
+    throw error;
+  }
+};
+
+/**
+ * Update an existing player
+ */
+export const updatePlayer = async (playerId: string, player: ApiPlayer): Promise<{ message: string; player: ApiPlayer }> => {
+  try {
+    const response = await fetch(buildApiUrl(`${API_CONFIG.ENDPOINTS.PLAYERS}/${playerId}`), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(player),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Player updated successfully:', result.player);
+    return result;
+  } catch (error) {
+    console.error('Error updating player:', error);
+    throw error;
+  }
+};
+
+/**
+ * Delete a player
+ */
+export const deletePlayer = async (playerId: string): Promise<{ message: string; playerId: string }> => {
+  try {
+    const response = await fetch(buildApiUrl(`${API_CONFIG.ENDPOINTS.PLAYERS}/${playerId}`), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Player deleted successfully:', result.playerId);
+    return result;
+  } catch (error) {
+    console.error('Error deleting player:', error);
+    throw error;
+  }
+};
+
+/**
+ * Create a new game
+ */
+export const createGame = async (game: ApiGame): Promise<{ message: string; game: ApiGame }> => {
+  try {
+    const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GAMES), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(game),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Game created successfully:', result.game);
+    return result;
+  } catch (error) {
+    console.error('Error creating game:', error);
+    throw error;
+  }
+};
+
+/**
+ * Update an existing game
+ */
+export const updateGame = async (gameId: string, game: ApiGame): Promise<{ message: string; game: ApiGame }> => {
+  try {
+    const response = await fetch(buildApiUrl(`${API_CONFIG.ENDPOINTS.GAMES}/${gameId}`), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(game),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Game updated successfully:', result.game);
+    return result;
+  } catch (error) {
+    console.error('Error updating game:', error);
+    throw error;
+  }
+};
+
+/**
+ * Delete a game
+ */
+export const deleteGame = async (gameId: string): Promise<{ message: string; gameId: string }> => {
+  try {
+    const response = await fetch(buildApiUrl(`${API_CONFIG.ENDPOINTS.GAMES}/${gameId}`), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Game deleted successfully:', result.gameId);
+    return result;
+  } catch (error) {
+    console.error('Error deleting game:', error);
     throw error;
   }
 };

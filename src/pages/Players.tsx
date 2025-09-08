@@ -25,7 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Player } from '../types';
 import localforage from 'localforage';
 import PlayerImage from '../components/PlayerImage';
-import { createPlayer } from '../services/api';
+import { createPlayer, updatePlayer, deletePlayer } from '../services/api';
 import { syncPlayersFromBackend } from '../utils/storage';
 
 const Players = () => {
@@ -98,18 +98,46 @@ const Players = () => {
 
     if (isEditing && selectedPlayer) {
       // Update existing player
+      const updatedPlayer: Player = {
+        ...selectedPlayer,
+        name: newPlayer.name,
+        photoUrl: newPlayer.photoUrl,
+        basketballStats: newPlayer.basketballStats,
+      };
+
+      // Update localforage first
       const updatedPlayers = players.map(player =>
-        player.id === selectedPlayer.id
-          ? {
-              ...player,
-              name: newPlayer.name,
-              photoUrl: newPlayer.photoUrl,
-              basketballStats: newPlayer.basketballStats,
-            }
-          : player
+        player.id === selectedPlayer.id ? updatedPlayer : player
       );
       setPlayers(updatedPlayers);
       localforage.setItem('players', updatedPlayers);
+
+      // Then call API to update in backend
+      try {
+        const apiPlayer = {
+          id: updatedPlayer.id,
+          name: updatedPlayer.name,
+          band: updatedPlayer.band,
+          status: updatedPlayer.status,
+          basketballStats: updatedPlayer.basketballStats,
+          photoUrl: updatedPlayer.photoUrl,
+        };
+        
+        const result = await updatePlayer(selectedPlayer.id, apiPlayer);
+        console.log('Player updated in backend:', result);
+        
+        // Update local player with the response from backend
+        const finalUpdatedPlayer = { ...updatedPlayer, photoUrl: result.player.photoUrl };
+        setPlayers(prevPlayers => {
+          const finalUpdatedPlayers = prevPlayers.map(p => p.id === selectedPlayer.id ? finalUpdatedPlayer : p);
+          localforage.setItem('players', finalUpdatedPlayers);
+          return finalUpdatedPlayers;
+        });
+        
+      } catch (error) {
+        console.error('Failed to update player in backend:', error);
+        // Player is still updated locally, so we continue
+      }
     } else {
       // Add new player
       const player: Player = {
@@ -140,7 +168,7 @@ const Players = () => {
         const result = await createPlayer(apiPlayer);
         console.log('Player saved to backend:', result);
         
-        // Update local player with the response from backend (in case image was downloaded)
+        // Update local player with the response from backend
         const updatedPlayer = { ...player, photoUrl: result.player.photoUrl };
         setPlayers(prevPlayers => {
           const finalUpdatedPlayers = prevPlayers.map(p => p.id === player.id ? updatedPlayer : p);
@@ -181,11 +209,21 @@ const Players = () => {
     setOpenDialog(true);
   };
 
-  const handleDeletePlayer = (playerId: string) => {
+  const handleDeletePlayer = async (playerId: string) => {
     if (window.confirm('Are you sure you want to delete this player?')) {
+      // Update localforage first
       const updatedPlayers = players.filter(player => player.id !== playerId);
       setPlayers(updatedPlayers);
       localforage.setItem('players', updatedPlayers);
+
+      // Then call API to delete from backend
+      try {
+        const result = await deletePlayer(playerId);
+        console.log('Player deleted from backend:', result);
+      } catch (error) {
+        console.error('Failed to delete player from backend:', error);
+        // Player is still deleted locally, so we continue
+      }
     }
   };
 

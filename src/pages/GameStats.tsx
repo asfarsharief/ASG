@@ -33,6 +33,7 @@ import { Add, Edit, Delete, SportsBasketball, ExpandMore } from '@mui/icons-mate
 import localForage from 'localforage';
 import { Game, Player, PlayerGameStats } from '../types';
 import { formatDate } from '../utils/dateUtils';
+import { createGame, updateGame, deleteGame, updatePlayer, ApiGame, ApiPlayerGameStats, ApiPlayer } from '../services/api';
 
 const GameStatsPage = () => {
   const [games, setGames] = useState<Game[]>([]);
@@ -81,6 +82,109 @@ const GameStatsPage = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  // Helper functions to convert between frontend and API types
+  const convertGameToApi = (game: Game): ApiGame => ({
+    id: game.id,
+    gameName: game.gameName,
+    gameDate: game.gameDate,
+    homeTeamName: game.homeTeamName,
+    awayTeamName: game.awayTeamName,
+    homeScore: game.homeScore,
+    awayScore: game.awayScore,
+    gameResult: game.gameResult,
+    playerStats: game.playerStats.map(convertPlayerGameStatsToApi)
+  });
+
+  const convertApiToGame = (apiGame: ApiGame): Game => ({
+    id: apiGame.id,
+    gameName: apiGame.gameName,
+    gameDate: apiGame.gameDate,
+    homeTeamId: '', // Not used in API
+    homeTeamName: apiGame.homeTeamName,
+    awayTeamId: '', // Not used in API
+    awayTeamName: apiGame.awayTeamName,
+    homeScore: apiGame.homeScore,
+    awayScore: apiGame.awayScore,
+    gameResult: apiGame.gameResult as 'home_win' | 'away_win',
+    playerStats: apiGame.playerStats.map(convertApiToPlayerGameStats)
+  });
+
+  const convertPlayerGameStatsToApi = (stats: PlayerGameStats): ApiPlayerGameStats => ({
+    id: stats.id,
+    playerId: stats.playerId,
+    playerName: stats.playerName,
+    teamId: stats.teamId,
+    teamName: stats.teamName,
+    gameId: stats.gameId,
+    minutesPlayed: stats.minutesPlayed,
+    points: stats.points,
+    fieldGoalsMade: stats.fieldGoalsMade,
+    fieldGoalsAttempted: stats.fieldGoalsAttempted,
+    threePointersMade: stats.threePointersMade,
+    threePointersAttempted: stats.threePointersAttempted,
+    freeThrowsMade: stats.freeThrowsMade,
+    freeThrowsAttempted: stats.freeThrowsAttempted,
+    rebounds: stats.rebounds,
+    assists: stats.assists,
+    steals: stats.steals,
+    blocks: stats.blocks,
+    turnovers: stats.turnovers,
+    personalFouls: stats.personalFouls,
+    plusMinus: stats.plusMinus
+  });
+
+  const convertApiToPlayerGameStats = (apiStats: ApiPlayerGameStats): PlayerGameStats => ({
+    id: apiStats.id,
+    playerId: apiStats.playerId,
+    playerName: apiStats.playerName,
+    teamId: apiStats.teamId,
+    teamName: apiStats.teamName,
+    gameId: apiStats.gameId,
+    minutesPlayed: apiStats.minutesPlayed,
+    points: apiStats.points,
+    fieldGoalsMade: apiStats.fieldGoalsMade,
+    fieldGoalsAttempted: apiStats.fieldGoalsAttempted,
+    threePointersMade: apiStats.threePointersMade,
+    threePointersAttempted: apiStats.threePointersAttempted,
+    freeThrowsMade: apiStats.freeThrowsMade,
+    freeThrowsAttempted: apiStats.freeThrowsAttempted,
+    rebounds: apiStats.rebounds,
+    assists: apiStats.assists,
+    steals: apiStats.steals,
+    blocks: apiStats.blocks,
+    turnovers: apiStats.turnovers,
+    personalFouls: apiStats.personalFouls,
+    plusMinus: apiStats.plusMinus
+  });
+
+  // Helper function to convert Player to ApiPlayer
+  const convertPlayerToApi = (player: Player): ApiPlayer => ({
+    id: player.id,
+    name: player.name,
+    band: player.band,
+    status: player.status,
+    basketballStats: player.basketballStats,
+    photoUrl: player.photoUrl
+  });
+
+  // Function to sync updated players to backend
+  const syncUpdatedPlayersToBackend = async (updatedPlayers: Player[]) => {
+    console.log('Syncing updated players to backend...');
+    
+    for (const player of updatedPlayers) {
+      try {
+        const apiPlayer = convertPlayerToApi(player);
+        const result = await updatePlayer(player.id, apiPlayer);
+        console.log(`Player ${player.name} synced to backend:`, result);
+      } catch (error) {
+        console.error(`Failed to sync player ${player.name} to backend:`, error);
+        // Continue with other players even if one fails
+      }
+    }
+    
+    console.log('Player sync to backend completed');
+  };
 
   const loadData = async () => {
     try {
@@ -143,12 +247,32 @@ const GameStatsPage = () => {
       playerStats: playerStats,
     };
 
+    // Update localforage first
     const updatedGames = [...games, game];
     setGames(updatedGames);
     await localForage.setItem('games', updatedGames);
 
-    // Update player statistics
-    await updatePlayerStats(game);
+    // Then call API to save to backend
+    try {
+      const apiGame = convertGameToApi(game);
+      const result = await createGame(apiGame);
+      console.log('Game saved to backend:', result);
+      
+      // Update local game with the response from backend
+      const updatedGame = convertApiToGame(result.game);
+      setGames(prevGames => {
+        const finalUpdatedGames = prevGames.map(g => g.id === game.id ? updatedGame : g);
+        localForage.setItem('games', finalUpdatedGames);
+        return finalUpdatedGames;
+      });
+    } catch (error) {
+      console.error('Failed to save game to backend:', error);
+      // Game is still saved locally, so we continue
+    }
+
+    // Update player statistics and sync to backend
+    const updatedPlayers = await updatePlayerStats(game);
+    await syncUpdatedPlayersToBackend(updatedPlayers);
 
     // Reset form
     setNewGame({
@@ -165,8 +289,9 @@ const GameStatsPage = () => {
     setOpenGameDialog(false);
   };
 
-  const updatePlayerStats = async (game: Game) => {
+  const updatePlayerStats = async (game: Game): Promise<Player[]> => {
     const updatedPlayers = Array.isArray(players) ? [...players] : [];
+    const playersToSync: Player[] = [];
 
     game.playerStats.forEach(gameStat => {
       const playerIndex = updatedPlayers.findIndex(p => p.id === gameStat.playerId);
@@ -216,7 +341,7 @@ const GameStatsPage = () => {
         const newFreeThrowPercentage = gameStat.freeThrowsAttempted > 0 ? 
           (gameStat.freeThrowsMade / gameStat.freeThrowsAttempted) * 100 : currentStats.freeThrowPercentage;
 
-        updatedPlayers[playerIndex] = {
+        const updatedPlayer = {
           ...player,
           basketballStats: {
             ...currentStats,
@@ -234,11 +359,16 @@ const GameStatsPage = () => {
             minutesPerGame: Math.round(newMinutesPerGame * 100) / 100,
           },
         };
+
+        updatedPlayers[playerIndex] = updatedPlayer;
+        playersToSync.push(updatedPlayer);
       }
     });
 
     setPlayers(updatedPlayers);
     await localForage.setItem('players', updatedPlayers);
+    
+    return playersToSync;
   };
 
   const handleEditGame = (game: Game) => {
@@ -251,6 +381,22 @@ const GameStatsPage = () => {
       awayScore: game.awayScore,
     });
     setPlayerStats(game.playerStats);
+    
+    // Populate team players based on existing player stats
+    const homePlayers: string[] = [];
+    const awayPlayers: string[] = [];
+    
+    game.playerStats.forEach(stat => {
+      if (stat.teamName === game.homeTeamName) {
+        homePlayers.push(stat.playerId);
+      } else if (stat.teamName === game.awayTeamName) {
+        awayPlayers.push(stat.playerId);
+      }
+    });
+    
+    setHomeTeamPlayers(homePlayers);
+    setAwayTeamPlayers(awayPlayers);
+    
     setIsEditingGame(true);
     setEditingGameId(game.id);
     setOpenGameDialog(true);
@@ -275,9 +421,32 @@ const GameStatsPage = () => {
       playerStats: playerStats,
     };
 
+    // Update localforage first
     const updatedGames = games.map(g => g.id === editingGameId ? updatedGame : g);
     setGames(updatedGames);
     await localForage.setItem('games', updatedGames);
+
+    // Then call API to update in backend
+    try {
+      const apiGame = convertGameToApi(updatedGame);
+      const result = await updateGame(editingGameId, apiGame);
+      console.log('Game updated in backend:', result);
+      
+      // Update local game with the response from backend
+      const finalUpdatedGame = convertApiToGame(result.game);
+      setGames(prevGames => {
+        const finalUpdatedGames = prevGames.map(g => g.id === editingGameId ? finalUpdatedGame : g);
+        localForage.setItem('games', finalUpdatedGames);
+        return finalUpdatedGames;
+      });
+    } catch (error) {
+      console.error('Failed to update game in backend:', error);
+      // Game is still updated locally, so we continue
+    }
+
+    // Update player statistics and sync to backend
+    const updatedPlayers = await updatePlayerStats(updatedGame);
+    await syncUpdatedPlayersToBackend(updatedPlayers);
 
     // Reset form
     setNewGame({
@@ -298,9 +467,19 @@ const GameStatsPage = () => {
 
   const handleDeleteGame = async (gameId: string) => {
     if (window.confirm('Are you sure you want to delete this game?')) {
+      // Update localforage first
       const updatedGames = games.filter(g => g.id !== gameId);
       setGames(updatedGames);
       await localForage.setItem('games', updatedGames);
+
+      // Then call API to delete from backend
+      try {
+        const result = await deleteGame(gameId);
+        console.log('Game deleted from backend:', result);
+      } catch (error) {
+        console.error('Failed to delete game from backend:', error);
+        // Game is still deleted locally, so we continue
+      }
     }
   };
 

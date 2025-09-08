@@ -125,6 +125,44 @@ export interface Game {
   playerStats: PlayerGameStats[];
 }
 
+// API version of Game for backend communication
+export interface ApiGame {
+  id: string;
+  gameName: string;
+  gameDate: string;
+  homeTeamName: string;
+  awayTeamName: string;
+  homeScore: number;
+  awayScore: number;
+  gameResult: string;
+  playerStats: ApiPlayerGameStats[];
+}
+
+// API version of PlayerGameStats for backend communication
+export interface ApiPlayerGameStats {
+  id: string;
+  playerId: string;
+  playerName: string;
+  teamId: string;
+  teamName: string;
+  gameId: string;
+  minutesPlayed: number;
+  points: number;
+  fieldGoalsMade: number;
+  fieldGoalsAttempted: number;
+  threePointersMade: number;
+  threePointersAttempted: number;
+  freeThrowsMade: number;
+  freeThrowsAttempted: number;
+  rebounds: number;
+  assists: number;
+  steals: number;
+  blocks: number;
+  turnovers: number;
+  personalFouls: number;
+  plusMinus: number;
+}
+
 export interface PlayerGameStats {
   id: string;
   playerId: string;
