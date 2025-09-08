@@ -6,7 +6,7 @@ RUN  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a --installsuffix cgo -o bi
 # CMD ["/src/bin/app"]
 
 FROM alpine
-EXPOSE 8080
+EXPOSE 10000
 COPY --from=0 /src/bin/app /app
 
 CMD [ "/app" ]

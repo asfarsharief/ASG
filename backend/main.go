@@ -61,7 +61,7 @@ func loadInitialData() {
 func main() {
 	dbFile := "auction.db"
 	imagesDir := "images"
-	baseURL := "http://localhost:8080"
+	baseURL := "http://localhost:10000"
 
 	// Check if DB already exists
 	_, err := os.Stat(dbFile)
@@ -231,7 +231,7 @@ func main() {
 		c.File(imagePath)
 	})
 
-	fmt.Printf("Server starting on :8080\n")
+	fmt.Printf("Server starting on :10000\n")
 	fmt.Printf("Images will be served from: %s\n", filepath.Join(imagesDir))
-	r.Run(":8080")
+	r.Run(":10000")
 }
