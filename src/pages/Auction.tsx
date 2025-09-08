@@ -26,6 +26,7 @@ import * as XLSX from 'xlsx';
 import { Team, Player, AuctionState, AuctionBand } from '../types';
 import localforage from 'localforage';
 import PlayerImage from '../components/PlayerImage';
+import { syncAuctionData } from '../services/api';
 
 // Helper function to update auctions in localForage
 const updateAuctionsInStorage = async (id: string, updatedAuction: AuctionState) => {
@@ -42,6 +43,21 @@ const updateAuctionsInStorage = async (id: string, updatedAuction: AuctionState)
       a.id === id ? updatedAuction : a
     );
     await localforage.setItem('auctions', updatedAuctions);
+  }
+};
+
+// Helper function to sync auction data to backend when auction is completed
+const syncCompletedAuction = async () => {
+  try {
+    const storedAuctions = await localforage.getItem<AuctionState[]>('auctions');
+    if (Array.isArray(storedAuctions)) {
+      console.log('Syncing completed auction data to backend...');
+      await syncAuctionData(storedAuctions);
+      console.log('Auction data synced successfully to backend');
+    }
+  } catch (error) {
+    console.error('Failed to sync auction data to backend:', error);
+    // Don't show error to user as this is background sync
   }
 };
 
@@ -426,13 +442,16 @@ const Auction = () => {
       setAuctionState(completedState);
       
       // Update auction status in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
+      localforage.getItem('auctions').then(async (storedAuctions) => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const finalAuctions = auctions.map((a: AuctionState) => 
             a.id === id ? completedState : a
           );
-          localforage.setItem('auctions', JSON.stringify(finalAuctions));
+          await localforage.setItem('auctions', JSON.stringify(finalAuctions));
+          
+          // Sync completed auction data to backend
+          await syncCompletedAuction();
         }
       });
     } else if (updatedAvailablePlayers.length === 0) {
@@ -517,13 +536,16 @@ const Auction = () => {
       setAuctionState(completedState);
       
       // Update auction status in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
+      localforage.getItem('auctions').then(async (storedAuctions) => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const finalAuctions = auctions.map((a: AuctionState) => 
             a.id === id ? completedState : a
           );
-          localforage.setItem('auctions', JSON.stringify(finalAuctions));
+          await localforage.setItem('auctions', JSON.stringify(finalAuctions));
+          
+          // Sync completed auction data to backend
+          await syncCompletedAuction();
         }
       });
     } else if (updatedAvailablePlayers.length === 0) {
@@ -590,13 +612,16 @@ const Auction = () => {
       setShowRoundCompleteDialog(false);
       
       // Store updated data
-      localforage.getItem('auctions').then((storedAuctions) => {
+      localforage.getItem('auctions').then(async (storedAuctions) => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: AuctionState) => 
             a.id === id ? completedState : a
           );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+          await localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+          
+          // Sync completed auction data to backend
+          await syncCompletedAuction();
         }
       });
       return;
@@ -719,13 +744,16 @@ const Auction = () => {
       setAuctionState(completedState);
       
       // Store updated data
-      localforage.getItem('auctions').then((storedAuctions) => {
+      localforage.getItem('auctions').then(async (storedAuctions) => {
         if (storedAuctions && typeof storedAuctions === 'string') {
           const auctions = JSON.parse(storedAuctions);
           const updatedAuctions = auctions.map((a: AuctionState) => 
             a.id === id ? completedState : a
           );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+          await localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+          
+          // Sync completed auction data to backend
+          await syncCompletedAuction();
         }
       });
     }
@@ -752,13 +780,16 @@ const Auction = () => {
     setShowRoundCompleteDialog(false);
 
     // Store updated data
-    localforage.getItem('auctions').then((storedAuctions) => {
+    localforage.getItem('auctions').then(async (storedAuctions) => {
       if (storedAuctions && typeof storedAuctions === 'string') {
         const auctions = JSON.parse(storedAuctions);
         const updatedAuctions = auctions.map((a: AuctionState) => 
           a.id === id ? updatedState : a
         );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+        await localforage.setItem('auctions', JSON.stringify(updatedAuctions));
+        
+        // Sync completed auction data to backend
+        await syncCompletedAuction();
       }
     });
   };

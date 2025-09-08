@@ -99,23 +99,48 @@ export const syncDataFromBackend = async () => {
 
     console.log('Backend available, syncing data...');
     
-    // Fetch data from backend
-    const [players, auctions, games] = await Promise.all([
-      fetchPlayers(),
-      fetchAuctions(),
-      fetchGames()
-    ]);
+    // Check if auctions already exist in localforage
+    const existingAuctions = await localforage.getItem('auctions');
+    const hasExistingAuctions = existingAuctions !== null;
+    
+    if (hasExistingAuctions) {
+      console.log('Auctions already exist in localforage, skipping auction sync');
+      
+      // Only fetch players and games, skip auctions
+      const [players, games] = await Promise.all([
+        fetchPlayers(),
+        fetchGames()
+      ]);
 
-    // Update localforage with backend data
-    await localforage.setItem('players', players);
-    await localforage.setItem('auctions', auctions);
-    await localforage.setItem('games', games);
+      // Update localforage with backend data (excluding auctions)
+      await localforage.setItem('players', players);
+      await localforage.setItem('games', games);
 
-    console.log('Successfully synced data from backend:', {
-      players: players.length,
-      auctions: auctions.length,
-      games: games.length
-    });
+      console.log('Successfully synced data from backend (excluding auctions):', {
+        players: players.length,
+        games: games.length
+      });
+    } else {
+      console.log('No existing auctions found, syncing all data including auctions');
+      
+      // Fetch all data from backend
+      const [players, auctions, games] = await Promise.all([
+        fetchPlayers(),
+        fetchAuctions(),
+        fetchGames()
+      ]);
+
+      // Update localforage with backend data
+      await localforage.setItem('players', players);
+      await localforage.setItem('auctions', auctions);
+      await localforage.setItem('games', games);
+
+      console.log('Successfully synced data from backend:', {
+        players: players.length,
+        auctions: auctions.length,
+        games: games.length
+      });
+    }
 
     return true;
   } catch (error) {

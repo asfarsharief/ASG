@@ -429,6 +429,48 @@ func main() {
 		})
 	})
 
+	// Sync auction data from frontend to backend
+	r.POST("/auctions/sync", func(c *gin.Context) {
+		var auctionData struct {
+			Auctions []models.Auction `json:"auctions"`
+		}
+
+		if err := c.ShouldBindJSON(&auctionData); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
+			return
+		}
+
+		if len(auctionData.Auctions) == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "No auction data provided"})
+			return
+		}
+
+		// Clear existing auctions in database
+		var existingAuctions []models.Auction
+		_ = store.GetAll("auctions", &existingAuctions)
+
+		// Delete all existing auctions
+		for _, auction := range existingAuctions {
+			store.Delete("auctions", auction.ID)
+		}
+
+		// Save new auction data to database
+		syncedCount := 0
+		for _, auction := range auctionData.Auctions {
+			if err := store.Save("auctions", auction.ID, auction); err != nil {
+				fmt.Printf("Failed to save auction %s: %v\n", auction.ID, err)
+				continue
+			}
+			syncedCount++
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message":       "Auction data synced successfully",
+			"syncedCount":   syncedCount,
+			"totalAuctions": len(auctionData.Auctions),
+		})
+	})
+
 	// Image API endpoint
 	r.GET("/players/:id/image", func(c *gin.Context) {
 		playerID := c.Param("id")

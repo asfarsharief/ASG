@@ -22,6 +22,7 @@ import {
 import { AuctionState } from '../types';
 import localforage from 'localforage';
 import { formatDate } from '../utils/dateUtils';
+import { syncAuctionData } from '../services/api';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -70,6 +71,17 @@ const Home = () => {
     
     // Navigate to auction setup page
     navigate(`/auction/${auction.id}/setup`);
+  };
+
+  const handleSyncAuctionData = async () => {
+    try {
+      console.log('Syncing auction data to backend...');
+      const result = await syncAuctionData(auctions);
+      alert(`Auction data synced successfully! Synced ${result.syncedCount} out of ${result.totalAuctions} auctions.`);
+    } catch (error) {
+      console.error('Failed to sync auction data:', error);
+      alert('Failed to sync auction data to backend. Please try again.');
+    }
   };
 
   const handleAuctionClick = (auction: AuctionState) => {
@@ -129,13 +141,23 @@ const Home = () => {
         <Typography variant="h4" component="h1">
           Auctions
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setOpenAuctionDialog(true)}
-        >
-          Create New Auction
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleSyncAuctionData}
+            disabled={auctions.length === 0}
+          >
+            Sync Auction Data
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenAuctionDialog(true)}
+          >
+            Create New Auction
+          </Button>
+        </Box>
       </Box>
 
       <Grid container spacing={3}>

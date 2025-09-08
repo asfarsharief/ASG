@@ -363,4 +363,31 @@ export const deleteGame = async (gameId: string): Promise<{ message: string; gam
   }
 };
 
+/**
+ * Sync auction data from localforage to backend
+ */
+export const syncAuctionData = async (auctions: any[]): Promise<{ message: string; syncedCount: number; totalAuctions: number }> => {
+  try {
+    const response = await fetch(buildApiUrl(`${API_CONFIG.ENDPOINTS.AUCTIONS}/sync`), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ auctions }),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Auction data synced successfully:', result);
+    return result;
+  } catch (error) {
+    console.error('Error syncing auction data:', error);
+    throw error;
+  }
+};
+
 
