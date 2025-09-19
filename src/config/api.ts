@@ -2,7 +2,7 @@
 
 export const API_CONFIG = {
   // Backend API base URL
-  BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:10000',
+  BASE_URL: 'https://asg-backend-qqnu.onrender.com',
   
   // API endpoints
   ENDPOINTS: {
