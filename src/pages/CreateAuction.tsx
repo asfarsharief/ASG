@@ -77,7 +77,7 @@ const CreateAuction = () => {
                   fullWidth
                   label="Starting Price"
                   name="startingPrice"
-                  type="number"
+                  type="text"
                   value={formData.startingPrice}
                   onChange={handleChange}
                   InputProps={{

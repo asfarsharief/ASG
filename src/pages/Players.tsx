@@ -11,9 +11,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  List,
-  ListItem,
-  Divider,
   IconButton,
   Grid,
   Accordion,
@@ -293,48 +290,74 @@ const Players = () => {
           <Typography variant="h6" gutterBottom>
             Total Players: {players.length}
           </Typography>
-          <List>
+          <Grid container spacing={3}>
             {players.map((player, index) => (
-              <React.Fragment key={player.id}>
-                <ListItem
-                  secondaryAction={
-                    <Box>
-                      <IconButton
-                        edge="end"
-                        onClick={() => handleEditPlayer(player)}
-                        sx={{ mr: 1 }}
-                      >
-                        Edit
-                      </IconButton>
-                      <IconButton
-                        edge="end"
-                        color="error"
-                        onClick={() => handleDeletePlayer(player.id)}
-                      >
-                        Delete
-                      </IconButton>
-                    </Box>
-                  }
+              <Grid item xs={12} sm={6} md={4} lg={3} key={player.id}>
+                <Card 
+                  sx={{ 
+                    height: '100%', 
+                    display: 'flex', 
+                    flexDirection: 'column',
+                    position: 'relative',
+                    '&:hover': {
+                      boxShadow: 4,
+                    }
+                  }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                    <PlayerImage
-                      playerId={player.id}
-                      playerName={player.name}
-                      size={56}
-                      variant="circular"
-                      className="player-avatar"
-                    />
-                    <Box sx={{ flexGrow: 1 }}>
-                      <Typography variant="h6" component="div">
-                        {index + 1}. {player.name}
-                      </Typography>
-                      {player.basketballStats && (
-                        <Box sx={{ display: 'flex', gap: 1, mt: 1, flexWrap: 'wrap' }}>
-                          <Chip 
-                            label={`${player.basketballStats.pointsAverage} PPG`} 
-                            size="small" 
-                            color="primary" 
-                          />
+                  <CardContent sx={{ flexGrow: 1, textAlign: 'center', pb: 1 }}>
+                    <Box sx={{ position: 'relative', mb: 2 }}>
+                      <PlayerImage
+                        playerId={player.id}
+                        playerName={player.name}
+                        size={120}
+                        variant="circular"
+                        className="player-avatar"
+                      />
+                      <Box sx={{ position: 'absolute', top: 0, right: 0 }}>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleEditPlayer(player)}
+                          sx={{ 
+                            bgcolor: 'primary.main', 
+                            color: 'white',
+                            '&:hover': { bgcolor: 'primary.dark' },
+                            width: 32,
+                            height: 32,
+                            mr: 0.5
+                          }}
+                        >
+                          ✏️
+                        </IconButton>
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => handleDeletePlayer(player.id)}
+                          sx={{ 
+                            bgcolor: 'error.main', 
+                            color: 'white',
+                            '&:hover': { bgcolor: 'error.dark' },
+                            width: 32,
+                            height: 32
+                          }}
+                        >
+                          🗑️
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    
+                    <Typography variant="h6" component="div" sx={{ mb: 1, fontWeight: 'bold' }}>
+                      {player.name}
+                    </Typography>
+                    
+                    {player.basketballStats && (
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                        <Chip 
+                          label={`${player.basketballStats.pointsAverage} PPG`} 
+                          size="small" 
+                          color="primary" 
+                          sx={{ mb: 0.5 }}
+                        />
+                        <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center', flexWrap: 'wrap' }}>
                           <Chip 
                             label={`${player.basketballStats.fieldGoalPercentage}% FG`} 
                             size="small" 
@@ -345,20 +368,19 @@ const Players = () => {
                             size="small" 
                             color="success" 
                           />
-                          <Chip 
-                            label={`${player.basketballStats.gamesPlayed} Games`} 
-                            size="small" 
-                            variant="outlined" 
-                          />
                         </Box>
-                      )}
-                    </Box>
-                  </Box>
-                </ListItem>
-                {index < players.length - 1 && <Divider />}
-              </React.Fragment>
+                        <Chip 
+                          label={`${player.basketballStats.gamesPlayed} Games`} 
+                          size="small" 
+                          variant="outlined" 
+                        />
+                      </Box>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
             ))}
-          </List>
+          </Grid>
         </CardContent>
       </Card>
 
@@ -397,7 +419,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Win Percentage (%)"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.winPercentage}
                     onChange={(e) => setNewPlayer({
@@ -413,7 +435,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Points Per Game"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.pointsAverage}
                     onChange={(e) => setNewPlayer({
@@ -429,7 +451,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Field Goal %"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.fieldGoalPercentage}
                     onChange={(e) => setNewPlayer({
@@ -445,7 +467,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="3-Point %"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.threePointPercentage}
                     onChange={(e) => setNewPlayer({
@@ -461,7 +483,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Free Throw %"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.freeThrowPercentage}
                     onChange={(e) => setNewPlayer({
@@ -477,7 +499,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Rebounds Per Game"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.reboundsAverage}
                     onChange={(e) => setNewPlayer({
@@ -493,7 +515,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Assists Per Game"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.assistsAverage}
                     onChange={(e) => setNewPlayer({
@@ -509,7 +531,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Steals Per Game"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.stealsAverage}
                     onChange={(e) => setNewPlayer({
@@ -525,7 +547,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Blocks Per Game"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.blocksAverage}
                     onChange={(e) => setNewPlayer({
@@ -541,7 +563,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Turnovers Per Game"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.turnoversAverage}
                     onChange={(e) => setNewPlayer({
@@ -557,7 +579,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Games Played"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.gamesPlayed}
                     onChange={(e) => setNewPlayer({
@@ -573,7 +595,7 @@ const Players = () => {
                   <TextField
                     margin="dense"
                     label="Minutes Per Game"
-                    type="number"
+                    type="text"
                     fullWidth
                     value={newPlayer.basketballStats.minutesPerGame}
                     onChange={(e) => setNewPlayer({

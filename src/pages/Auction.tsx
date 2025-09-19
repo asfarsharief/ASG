@@ -116,71 +116,53 @@ const Auction = () => {
   const [biddingStarted, setBiddingStarted] = useState(false);
   const [isNameVisible, setIsNameVisible] = useState(false);
 
+  // Helper function to get auctions from localforage
+  const getAuctionsFromStorage = async (): Promise<AuctionState[]> => {
+    const storedAuctions = await localforage.getItem('auctions');
+    if (Array.isArray(storedAuctions)) {
+      return storedAuctions;
+    } else if (storedAuctions && typeof storedAuctions === 'string') {
+      return JSON.parse(storedAuctions);
+    }
+    return [];
+  };
+
+  // Helper function to save auctions to localforage
+  const saveAuctionsToStorage = async (auctions: AuctionState[]) => {
+    await localforage.setItem('auctions', auctions);
+  };
+
   useEffect(() => {
     console.log('FIRST')
     // Load auction data from localForage
-    localforage.getItem<AuctionState[]>('auctions').then((storedAuctions) => {
-      if (Array.isArray(storedAuctions)) {
-        const currentAuction = storedAuctions.find((a: AuctionState) => a.id === id);
-        console.log("currentAuction: ", currentAuction)
-        if (currentAuction) {
-          setAuctionState(currentAuction);
-          setTeams(currentAuction.teams);
-          setBands(currentAuction.bands);
+    getAuctionsFromStorage().then((auctions) => {
+      const currentAuction = auctions.find((a: AuctionState) => a.id === id);
+      console.log("currentAuction: ", currentAuction)
+      if (currentAuction) {
+        setAuctionState(currentAuction);
+        setTeams(currentAuction.teams);
+        setBands(currentAuction.bands);
+        
+        // For completed auctions, show all sold players
+        if (currentAuction.status === 'completed') {
+          const allSoldPlayers = currentAuction.teams.flatMap((team: Team) => team.players);
+          setAvailablePlayers(allSoldPlayers);
+          setCurrentPlayer(allSoldPlayers[0] || null);
+        } else {
+          // For active auctions, show only available players
+          const availablePlayers = currentAuction.bands.flatMap((band: AuctionBand) => 
+            band.players.filter((player: Player) => player.status === 'available')
+          );
+          console.log("availablePlayers: ", availablePlayers)
+          const shuffledPlayers = currentAuction.randomizePlayersOrder
+            ? [...availablePlayers].sort(() => Math.random() - 0.5)
+            : availablePlayers;
           
-          // For completed auctions, show all sold players
-          if (currentAuction.status === 'completed') {
-            const allSoldPlayers = currentAuction.teams.flatMap((team: Team) => team.players);
-            setAvailablePlayers(allSoldPlayers);
-            setCurrentPlayer(allSoldPlayers[0] || null);
-          } else {
-            // For active auctions, show only available players
-            const availablePlayers = currentAuction.bands.flatMap((band: AuctionBand) => 
-              band.players.filter((player: Player) => player.status === 'available')
-            );
-            console.log("availablePlayers: ", availablePlayers)
-            const shuffledPlayers = currentAuction.randomizePlayersOrder
-              ? [...availablePlayers].sort(() => Math.random() - 0.5)
-              : availablePlayers;
-            
-            console.log("SHUFFLING: ",currentAuction.currentRound === 1 , currentAuction.randomizePlayersOrder, currentAuction.currentRound === 1 && currentAuction.randomizePlayersOrder, shuffledPlayers)
-            setAvailablePlayers(shuffledPlayers);
-            setCurrentPlayer(shuffledPlayers[0] || null);
-            // Set upcoming players
-            setUpcomingPlayers(shuffledPlayers.slice(1));
-          }
-        }
-      } else if (storedAuctions && typeof storedAuctions === 'string') {
-        // Handle legacy JSON string format
-        const auctions = JSON.parse(storedAuctions);
-        const currentAuction = auctions.find((a: AuctionState) => a.id === id);
-        console.log("currentAuction: ", currentAuction)
-        if (currentAuction) {
-          setAuctionState(currentAuction);
-          setTeams(currentAuction.teams);
-          setBands(currentAuction.bands);
-          
-          // For completed auctions, show all sold players
-          if (currentAuction.status === 'completed') {
-            const allSoldPlayers = currentAuction.teams.flatMap((team: Team) => team.players);
-            setAvailablePlayers(allSoldPlayers);
-            setCurrentPlayer(allSoldPlayers[0] || null);
-          } else {
-            // For active auctions, show only available players
-            const availablePlayers = currentAuction.bands.flatMap((band: AuctionBand) => 
-              band.players.filter((player: Player) => player.status === 'available')
-            );
-            console.log("availablePlayers: ", availablePlayers)
-            const shuffledPlayers = currentAuction.randomizePlayersOrder
-              ? [...availablePlayers].sort(() => Math.random() - 0.5)
-              : availablePlayers;
-            
-            console.log("SHUFFLING: ",currentAuction.currentRound === 1 , currentAuction.randomizePlayersOrder, currentAuction.currentRound === 1 && currentAuction.randomizePlayersOrder, shuffledPlayers)
-            setAvailablePlayers(shuffledPlayers);
-            setCurrentPlayer(shuffledPlayers[0] || null);
-            // Set upcoming players
-            setUpcomingPlayers(shuffledPlayers.slice(1));
-          }
+          console.log("SHUFFLING: ",currentAuction.currentRound === 1 , currentAuction.randomizePlayersOrder, currentAuction.currentRound === 1 && currentAuction.randomizePlayersOrder, shuffledPlayers)
+          setAvailablePlayers(shuffledPlayers);
+          setCurrentPlayer(shuffledPlayers[0] || null);
+          // Set upcoming players
+          setUpcomingPlayers(shuffledPlayers.slice(1));
         }
       }
     });
@@ -422,14 +404,11 @@ const Auction = () => {
     setAuctionState(updatedState);
 
     // Store updated data
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: AuctionState) => 
-          a.id === id ? updatedState : a
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((a: AuctionState) => 
+        a.id === id ? updatedState : a
+      );
+      saveAuctionsToStorage(updatedAuctions);
     });
 
     // Check if there are no more available players AND no skipped players
@@ -442,17 +421,14 @@ const Auction = () => {
       setAuctionState(completedState);
       
       // Update auction status in localForage
-      localforage.getItem('auctions').then(async (storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const finalAuctions = auctions.map((a: AuctionState) => 
-            a.id === id ? completedState : a
-          );
-          await localforage.setItem('auctions', JSON.stringify(finalAuctions));
-          
-          // Sync completed auction data to backend
-          await syncCompletedAuction();
-        }
+      getAuctionsFromStorage().then(async (auctions) => {
+        const finalAuctions = auctions.map((a: AuctionState) => 
+          a.id === id ? completedState : a
+        );
+        await saveAuctionsToStorage(finalAuctions);
+        
+        // Sync completed auction data to backend
+        await syncCompletedAuction();
       });
     } else if (updatedAvailablePlayers.length === 0) {
       // If no more available players but there are skipped players, show round complete dialog
@@ -516,14 +492,11 @@ const Auction = () => {
     setAuctionState(updatedState);
 
     // Store updated data
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: AuctionState) => 
-          a.id === id ? updatedState : a
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((a: AuctionState) => 
+        a.id === id ? updatedState : a
+      );
+      saveAuctionsToStorage(updatedAuctions);
     });
 
     // Check if there are no more available players AND no skipped players
@@ -536,17 +509,14 @@ const Auction = () => {
       setAuctionState(completedState);
       
       // Update auction status in localForage
-      localforage.getItem('auctions').then(async (storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const finalAuctions = auctions.map((a: AuctionState) => 
-            a.id === id ? completedState : a
-          );
-          await localforage.setItem('auctions', JSON.stringify(finalAuctions));
-          
-          // Sync completed auction data to backend
-          await syncCompletedAuction();
-        }
+      getAuctionsFromStorage().then(async (auctions) => {
+        const finalAuctions = auctions.map((a: AuctionState) => 
+          a.id === id ? completedState : a
+        );
+        await saveAuctionsToStorage(finalAuctions);
+        
+        // Sync completed auction data to backend
+        await syncCompletedAuction();
       });
     } else if (updatedAvailablePlayers.length === 0) {
       // If no more available players but there are skipped players, show round complete dialog
@@ -612,17 +582,14 @@ const Auction = () => {
       setShowRoundCompleteDialog(false);
       
       // Store updated data
-      localforage.getItem('auctions').then(async (storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: AuctionState) => 
-            a.id === id ? completedState : a
-          );
-          await localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-          
-          // Sync completed auction data to backend
-          await syncCompletedAuction();
-        }
+      getAuctionsFromStorage().then(async (auctions) => {
+        const updatedAuctions = auctions.map((a: AuctionState) => 
+          a.id === id ? completedState : a
+        );
+        await saveAuctionsToStorage(updatedAuctions);
+        
+        // Sync completed auction data to backend
+        await syncCompletedAuction();
       });
       return;
     }
@@ -639,14 +606,11 @@ const Auction = () => {
     setShowRoundCompleteDialog(false);
 
     // Store updated data
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: AuctionState) => 
-          a.id === id ? updatedState : a
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((a: AuctionState) => 
+        a.id === id ? updatedState : a
+      );
+      saveAuctionsToStorage(updatedAuctions);
     });
   };
 
@@ -725,14 +689,11 @@ const Auction = () => {
       setAuctionState(updatedState);
 
       // Store updated data
-      localforage.getItem('auctions').then((storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: AuctionState) => 
-            a.id === id ? updatedState : a
-          );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        }
+      getAuctionsFromStorage().then((auctions) => {
+        const updatedAuctions = auctions.map((a: AuctionState) => 
+          a.id === id ? updatedState : a
+        );
+        saveAuctionsToStorage(updatedAuctions);
       });
     } else {
       // If no players are available, complete the auction
@@ -744,17 +705,14 @@ const Auction = () => {
       setAuctionState(completedState);
       
       // Store updated data
-      localforage.getItem('auctions').then(async (storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: AuctionState) => 
-            a.id === id ? completedState : a
-          );
-          await localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-          
-          // Sync completed auction data to backend
-          await syncCompletedAuction();
-        }
+      getAuctionsFromStorage().then(async (auctions) => {
+        const updatedAuctions = auctions.map((a: AuctionState) => 
+          a.id === id ? completedState : a
+        );
+        await saveAuctionsToStorage(updatedAuctions);
+        
+        // Sync completed auction data to backend
+        await syncCompletedAuction();
       });
     }
 
@@ -780,17 +738,14 @@ const Auction = () => {
     setShowRoundCompleteDialog(false);
 
     // Store updated data
-    localforage.getItem('auctions').then(async (storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: AuctionState) => 
-          a.id === id ? updatedState : a
-        );
-        await localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        
-        // Sync completed auction data to backend
-        await syncCompletedAuction();
-      }
+    getAuctionsFromStorage().then(async (auctions) => {
+      const updatedAuctions = auctions.map((a: AuctionState) => 
+        a.id === id ? updatedState : a
+      );
+      await saveAuctionsToStorage(updatedAuctions);
+      
+      // Sync completed auction data to backend
+      await syncCompletedAuction();
     });
   };
 
@@ -933,14 +888,11 @@ const Auction = () => {
     }
 
     // Update localForage
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: AuctionState) => 
-          a.id === id ? updatedState : a
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((a: AuctionState) => 
+        a.id === id ? updatedState : a
+      );
+      saveAuctionsToStorage(updatedAuctions);
     });
 
     // Clear last action
@@ -1043,29 +995,21 @@ const Auction = () => {
             {extractUpcomingPlayers().map((player: Player) => (
               <Card key={player.id} sx={{ minWidth: 200 }}>
                 <CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <PlayerImage
-                      playerId={player.id}
-                      playerName={player.name}
-                      size={40}
-                      variant="circular"
-                    />
-                    <Box>
-                      <Typography variant="subtitle1">{player.name}</Typography>
-                      {player.basketballStats && (
-                        <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5 }}>
-                          <Typography variant="caption" color="primary">
-                            {player.basketballStats.pointsAverage} PPG
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            •
-                          </Typography>
-                          <Typography variant="caption" color="secondary">
-                            {player.basketballStats.fieldGoalPercentage}% FG
-                          </Typography>
-                        </Box>
-                      )}
-                    </Box>
+                  <Box sx={{ mb: 1 }}>
+                    <Typography variant="subtitle1">{player.name}</Typography>
+                    {player.basketballStats && (
+                      <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5 }}>
+                        <Typography variant="caption" color="primary">
+                          {player.basketballStats.pointsAverage} PPG
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          •
+                        </Typography>
+                        <Typography variant="caption" color="secondary">
+                          {player.basketballStats.fieldGoalPercentage}% FG
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
                   <Typography variant="body2" color="text.secondary">
                     Band: {bands.find(band => band.id === player.band)?.name || 'Unknown'}
@@ -1137,13 +1081,15 @@ const Auction = () => {
                 {currentPlayer ? (
                   <>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <PlayerImage
-                        playerId={currentPlayer.id}
-                        playerName={currentPlayer.name}
-                        size={56}
-                        variant="circular"
-                      />
-                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}>
+                      {isNameVisible && (
+                        <PlayerImage
+                          playerId={currentPlayer.id}
+                          playerName={currentPlayer.name}
+                          size={56}
+                          variant="circular"
+                        />
+                      )}
+                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2, ml: isNameVisible ? 2 : 0 }}>
                         <Typography variant="h6">
                           {isNameVisible ? currentPlayer.name : '******'}
                         </Typography>
@@ -1365,20 +1311,13 @@ const Auction = () => {
             borderRadius: 4,
           },
         }}>
-          {Object.values(auctionState.unsoldPlayers)
-            .flat()
-            .filter(player => player.status === 'available')
-            .map((player) => (
-              <Card key={player.id} sx={{ minWidth: 200 }}>
-                <CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <PlayerImage
-                      playerId={player.id}
-                      playerName={player.name}
-                      size={40}
-                      variant="circular"
-                    />
-                    <Box>
+            {Object.values(auctionState.unsoldPlayers)
+              .flat()
+              .filter(player => player.status === 'available')
+              .map((player) => (
+                <Card key={player.id} sx={{ minWidth: 200 }}>
+                  <CardContent>
+                    <Box sx={{ mb: 1 }}>
                       <Typography variant="subtitle1">{player.name}</Typography>
                       {player.basketballStats && (
                         <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5 }}>
@@ -1394,13 +1333,12 @@ const Auction = () => {
                         </Box>
                       )}
                     </Box>
-                  </Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Band: {bands.find(band => band.id === player.band)?.name || 'Unknown'}
-                  </Typography>
-                </CardContent>
-              </Card>
-            ))}
+                    <Typography variant="body2" color="text.secondary">
+                      Band: {bands.find(band => band.id === player.band)?.name || 'Unknown'}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
         </Box>
       </Box>
 

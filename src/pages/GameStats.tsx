@@ -860,7 +860,7 @@ const GameStatsPage = () => {
                 <TextField
                   fullWidth
                   label={`${newGame.homeTeamName || 'Team 1'} Score`}
-                  type="number"
+                  type="text"
                   value={newGame.homeScore}
                   onChange={(e) => setNewGame({ ...newGame, homeScore: parseInt(e.target.value) || 0 })}
                   required
@@ -868,7 +868,7 @@ const GameStatsPage = () => {
                 <TextField
                   fullWidth
                   label={`${newGame.awayTeamName || 'Team 2'} Score`}
-                  type="number"
+                  type="text"
                   value={newGame.awayScore}
                   onChange={(e) => setNewGame({ ...newGame, awayScore: parseInt(e.target.value) || 0 })}
                   required
@@ -1240,7 +1240,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Minutes Played"
-                type="number"
+                type="text"
                 value={newPlayerStats.minutesPlayed}
                 onChange={(e) => handleUpdatePlayerStat('minutesPlayed', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1250,7 +1250,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Points"
-                type="number"
+                type="text"
                 value={newPlayerStats.points}
                 onChange={(e) => handleUpdatePlayerStat('points', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1260,7 +1260,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Rebounds"
-                type="number"
+                type="text"
                 value={newPlayerStats.rebounds}
                 onChange={(e) => handleUpdatePlayerStat('rebounds', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1270,7 +1270,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Assists"
-                type="number"
+                type="text"
                 value={newPlayerStats.assists}
                 onChange={(e) => handleUpdatePlayerStat('assists', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1286,7 +1286,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Steals"
-                type="number"
+                type="text"
                 value={newPlayerStats.steals}
                 onChange={(e) => handleUpdatePlayerStat('steals', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1296,7 +1296,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Blocks"
-                type="number"
+                type="text"
                 value={newPlayerStats.blocks}
                 onChange={(e) => handleUpdatePlayerStat('blocks', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1306,7 +1306,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Turnovers"
-                type="number"
+                type="text"
                 value={newPlayerStats.turnovers}
                 onChange={(e) => handleUpdatePlayerStat('turnovers', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1316,7 +1316,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Personal Fouls"
-                type="number"
+                type="text"
                 value={newPlayerStats.personalFouls}
                 onChange={(e) => handleUpdatePlayerStat('personalFouls', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1332,7 +1332,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="FG Made"
-                type="number"
+                type="text"
                 value={newPlayerStats.fieldGoalsMade}
                 onChange={(e) => handleUpdatePlayerStat('fieldGoalsMade', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1342,7 +1342,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="FG Attempted"
-                type="number"
+                type="text"
                 value={newPlayerStats.fieldGoalsAttempted}
                 onChange={(e) => handleUpdatePlayerStat('fieldGoalsAttempted', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1352,7 +1352,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="3P Made"
-                type="number"
+                type="text"
                 value={newPlayerStats.threePointersMade}
                 onChange={(e) => handleUpdatePlayerStat('threePointersMade', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1362,7 +1362,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="3P Attempted"
-                type="number"
+                type="text"
                 value={newPlayerStats.threePointersAttempted}
                 onChange={(e) => handleUpdatePlayerStat('threePointersAttempted', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1372,7 +1372,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="FT Made"
-                type="number"
+                type="text"
                 value={newPlayerStats.freeThrowsMade}
                 onChange={(e) => handleUpdatePlayerStat('freeThrowsMade', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1382,7 +1382,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="FT Attempted"
-                type="number"
+                type="text"
                 value={newPlayerStats.freeThrowsAttempted}
                 onChange={(e) => handleUpdatePlayerStat('freeThrowsAttempted', parseInt(e.target.value) || 0)}
                 size="small"
@@ -1392,7 +1392,7 @@ const GameStatsPage = () => {
               <TextField
                 fullWidth
                 label="Plus/Minus"
-                type="number"
+                type="text"
                 value={newPlayerStats.plusMinus}
                 onChange={(e) => handleUpdatePlayerStat('plusMinus', parseInt(e.target.value) || 0)}
                 size="small"

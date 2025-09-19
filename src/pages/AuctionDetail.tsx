@@ -129,7 +129,7 @@ const AuctionDetail = () => {
                 <TextField
                   fullWidth
                   label="Bid Amount"
-                  type="number"
+                  type="text"
                   value={bidAmount}
                   onChange={handleBidAmountChange}
                   InputProps={{

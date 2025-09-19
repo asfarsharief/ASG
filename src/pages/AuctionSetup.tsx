@@ -69,6 +69,22 @@ const AuctionSetup = () => {
   const [availablePlayers, setAvailablePlayers] = useState<Player[]>([]);
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
 
+  // Helper function to get auctions from localforage
+  const getAuctionsFromStorage = async (): Promise<Auction[]> => {
+    const storedAuctions = await localforage.getItem('auctions');
+    if (Array.isArray(storedAuctions)) {
+      return storedAuctions;
+    } else if (storedAuctions && typeof storedAuctions === 'string') {
+      return JSON.parse(storedAuctions);
+    }
+    return [];
+  };
+
+  // Helper function to save auctions to localforage
+  const saveAuctionsToStorage = async (auctions: Auction[]) => {
+    await localforage.setItem('auctions', auctions);
+  };
+
   // Get players who are not already captains or vice captains
   const getAvailablePlayersForTeam = () => {
     const existingCaptains = new Set(teams.map(team => team.captain));
@@ -104,15 +120,12 @@ const AuctionSetup = () => {
 
   useEffect(() => {
     // Load auction data from localForage
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const currentAuction = auctions.find((a: Auction) => a.id === id);
-        if (currentAuction) {
-          setAuction(currentAuction);
-          setTeams(currentAuction.teams);
-          setBands(currentAuction.bands);
-        }
+    getAuctionsFromStorage().then((auctions) => {
+      const currentAuction = auctions.find((a: Auction) => a.id === id);
+      if (currentAuction) {
+        setAuction(currentAuction);
+        setTeams(currentAuction.teams);
+        setBands(currentAuction.bands);
       }
     });
 
@@ -145,14 +158,11 @@ const AuctionSetup = () => {
       setTeams(updatedTeams);
       
       // Update auction in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
-          );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        }
+      getAuctionsFromStorage().then((auctions) => {
+        const updatedAuctions = auctions.map((a: Auction) => 
+          a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
+        );
+        saveAuctionsToStorage(updatedAuctions);
       });
     }
   };
@@ -177,14 +187,11 @@ const AuctionSetup = () => {
       setTeams(updatedTeams);
       
       // Update auction in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
-          );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        }
+      getAuctionsFromStorage().then((auctions) => {
+        const updatedAuctions = auctions.map((a: Auction) => 
+          a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
+        );
+        saveAuctionsToStorage(updatedAuctions);
       });
     } else {
       // Add new team
@@ -202,14 +209,11 @@ const AuctionSetup = () => {
       setTeams(updatedTeams);
       
       // Update auction in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
-          );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        }
+      getAuctionsFromStorage().then((auctions) => {
+        const updatedAuctions = auctions.map((a: Auction) => 
+          a.id === id ? { ...a, teams: updatedTeams, randomizeAllPlayers: randomizeAllPlayers } : a
+        );
+        saveAuctionsToStorage(updatedAuctions);
       });
     }
 
@@ -244,14 +248,11 @@ const AuctionSetup = () => {
       setBands(updatedBands);
       
       // Update auction in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
-          );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        }
+      getAuctionsFromStorage().then((auctions) => {
+        const updatedAuctions = auctions.map((a: Auction) => 
+          a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
+        );
+        saveAuctionsToStorage(updatedAuctions);
       });
     }
   };
@@ -283,14 +284,11 @@ const AuctionSetup = () => {
       setBands(updatedBands);
       
       // Update auction in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
-          );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        }
+      getAuctionsFromStorage().then((auctions) => {
+        const updatedAuctions = auctions.map((a: Auction) => 
+          a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
+        );
+        saveAuctionsToStorage(updatedAuctions);
       });
     } else {
       // Add new band
@@ -306,14 +304,11 @@ const AuctionSetup = () => {
       setBands(updatedBands);
       
       // Update auction in localForage
-      localforage.getItem('auctions').then((storedAuctions) => {
-        if (storedAuctions && typeof storedAuctions === 'string') {
-          const auctions = JSON.parse(storedAuctions);
-          const updatedAuctions = auctions.map((a: Auction) => 
-            a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
-          );
-          localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        }
+      getAuctionsFromStorage().then((auctions) => {
+        const updatedAuctions = auctions.map((a: Auction) => 
+          a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
+        );
+        saveAuctionsToStorage(updatedAuctions);
       });
     }
 
@@ -356,14 +351,11 @@ const AuctionSetup = () => {
     setBands(updatedBands);
     
     // Update auction in localForage
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: Auction) => 
-          a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((a: Auction) => 
+        a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
+      );
+      saveAuctionsToStorage(updatedAuctions);
     });
 
     setOpenPlayerDialog(false);
@@ -384,14 +376,11 @@ const AuctionSetup = () => {
     setBands(updatedBands);
     
     // Update auction in localForage
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: Auction) => 
-          a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((a: Auction) => 
+        a.id === id ? { ...a, bands: updatedBands, randomizeAllPlayers: randomizeAllPlayers } : a
+      );
+      saveAuctionsToStorage(updatedAuctions);
     });
   };
 
@@ -415,19 +404,16 @@ const AuctionSetup = () => {
     }
 
     // Update auction status and players
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((auction: Auction) => 
-          auction.id === id ? { 
-            ...auction, 
-            status: 'in_progress',
-            randomizeAllPlayers: randomizeAllPlayers,
-          } : auction
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-        console.log("Updated Auctions: ", updatedAuctions);
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((auction: Auction) => 
+        auction.id === id ? { 
+          ...auction, 
+          status: 'in_progress' as const,
+          randomizeAllPlayers: randomizeAllPlayers,
+        } : auction
+      );
+      saveAuctionsToStorage(updatedAuctions);
+      console.log("Updated Auctions: ", updatedAuctions);
     });
 
     console.log("Navigating to auction page with ID:", id);
@@ -452,14 +438,11 @@ const AuctionSetup = () => {
     }
 
     // Update auction status to ongoing
-    localforage.getItem('auctions').then((storedAuctions) => {
-      if (storedAuctions && typeof storedAuctions === 'string') {
-        const auctions = JSON.parse(storedAuctions);
-        const updatedAuctions = auctions.map((a: Auction) => 
-          a.id === id ? { ...a, status: 'setup', randomizeAllPlayers: randomizeAllPlayers } : a
-        );
-        localforage.setItem('auctions', JSON.stringify(updatedAuctions));
-      }
+    getAuctionsFromStorage().then((auctions) => {
+      const updatedAuctions = auctions.map((a: Auction) => 
+        a.id === id ? { ...a, status: 'setup' as const, randomizeAllPlayers: randomizeAllPlayers } : a
+      );
+      saveAuctionsToStorage(updatedAuctions);
     });
 
     navigate('/');
@@ -750,7 +733,7 @@ const AuctionSetup = () => {
           <TextField
             margin="dense"
             label="Budget"
-            type="number"
+            type="text"
             fullWidth
             value={newTeam.budget}
             onChange={(e) => setNewTeam({ ...newTeam, budget: e.target.value })}
@@ -783,7 +766,7 @@ const AuctionSetup = () => {
             />
             <TextField
               label="Base Price"
-              type="number"
+              type="text"
               value={newBand.basePrice}
               onChange={(e) => setNewBand(prev => ({ ...prev, basePrice: e.target.value }))}
               fullWidth
